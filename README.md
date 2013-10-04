@@ -7,9 +7,9 @@ Created as part of the **CS469: Security Engineering, Fall 2013**, course at Geo
 
 Authors
 -------
+* Mike Brooks
 * Cameron Pelkey
 * John Reynolds
-* Mike
 
 Implementation
 --------------
