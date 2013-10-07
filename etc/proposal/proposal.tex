@@ -1,0 +1,31 @@
+\documentclass{article}
+
+\usepackage{setspace}
+
+\title{``iSESnapchat'' Proposal}
+\author{Cameron Pelkey \and Mike Brooks \and John Reynolds}
+\date{}
+
+\begin{document}
+\maketitle
+%\doublespacing
+
+\section{State of the Art}
+The popular mobile application, ``Snapchat'' has become very popular for its ability to send fleeting images to recipients. Regardless of the intentions of the user in sending images and video that go away after some time, the guarantee given by Snapchat to the user is novel: users cannot export the images or video viewed in the application. There is one critical flaw in this scheme, however: screenshots of the received messages may be taken on the mobile device. In this manner, users may thwart the security guarantee of Snapchat. As a mobile application, Snapchat may not intercept the hardware interrupts that take screenshots on mobile devices. All Snapchat is capable of is notifying the sending-party that a screenshot of their once-fleeting message was taken.
+
+On the Mac platform, there are already numerous ways for users to send and receive images. In addition to several multimedia-handling chat services, users may elect to send email. In all of these cases, a user has absolutely no expectation of control over the message once they have sent it. No application presently available on the Mac App Store provides the functionality of a Snapchat-like application. 
+
+\section{Description of the Prototype}
+Students Pelkey, Brooks, and Reynolds propose to develop a prototype for a more secure Snapchat-like service capable of sending, receiving, and viewing images. The application would present to the user a method of capturing or selecting an image to send to another user. The user would then be prompted for the ``destination-user'', who upon receiving the image would be able to see the image for some set amount of time. After the message is viewed, the message deletes itself. The custom-built viewer window displayed on the screen to view the message would be made to prevent screenshots. All transmissions would be encrypted using an as-yet-to-be-determined crypto scheme. 
+
+Our goal is not to create new methods of encryption or image capture. Libraries already exist that provide this functionality. Furthermore, in the interest of security, it makes sense to use a known and tested crypto suite. The novelty in the proposed approach is to prevent data leakage from the application. Ideally, there will be no way to extract the picture from the application, to read data in motion, or to prevent the deletion of a message. 
+
+\section{Capabilities and Facilities of Project Members}
+At a minimum, the members of this group each have some experience in application development. All group members have access to a computer running OS X with appropriate developer tools. Some group members have experience implementing cryptographic methods of communication. Others have experience in open source imaging libraries, such as OpenCV. These strengths add to the qualifications of the group.
+
+\section{Stretch Goals}
+Time permitting, additional functionality could be considered for addition to the project. As an implementation detail, our ``secure'' window which prevents screenshots would need a rendering backend to run. This is a trivial task for picture rendering. Video is a bit more of a challenge. Research could be done for methods of rendering video in our secure window, allowing the user to send videos.
+
+Additionally, other filetypes could be rendered in our window allowing for file sharing of arbitrary file types. The use case of being able to send one-time-viewable documents could also be valuable for an end user.
+
+\end{document}
