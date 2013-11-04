@@ -1,0 +1,33 @@
+Security: Public / Private RSA
+    Each user shares public keys with contact
+    Public keys stored in one file
+    
+Taking an image
+    Open image window
+    On capture
+        Get approval
+            Accepted
+                Choose n contacts
+                    Encrypt n images using n public keys
+                    Ship files to recipients
+            Reject
+                Return to capture
+Viewing file
+    on mouse down
+        decrypt file to memory
+        display using opencv
+        start timer
+    on mouse release
+        delete image from screen
+        delete the memory contents
+    on timer finish
+        delete image from screen
+        delete the memory contents
+        delete encrypted content
+        
+    on screen capture key input
+        delete image from screen
+        delete the memory contents
+        delete encrypted content
+        end timer
+        scold user
