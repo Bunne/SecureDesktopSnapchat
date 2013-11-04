@@ -1,0 +1,78 @@
+\documentclass[11pt, a4paper,titlepage]{report}
+\usepackage{geometry}
+\usepackage{titlesec}
+\titleformat{\chapter}[hang] 
+{\normalfont\huge\bfseries}{\thechapter:}{1em}{} 
+\renewcommand{\labelenumi}{\arabic{enumi}.} 
+\renewcommand{\labelenumii}{\arabic{enumi}.\arabic{enumii}}
+\renewcommand{\labelenumiii}{\arabic{enumi}.\arabic{enumii}.\arabic{enumiii}}
+\geometry{letterpaper}
+\usepackage{graphicx}
+\usepackage[table]{xcolor}
+\usepackage{amssymb}
+\usepackage[colorlinks=true,urlcolor=cyan]{hyperref}
+\usepackage{mdwlist}
+\usepackage{courier}
+\usepackage{fancyhdr}
+\usepackage{booktabs}
+\usepackage{mathtools}
+\usepackage[framemethod=TikZ]{mdframed}
+\usepackage{amsmath}
+\usepackage{subcaption}
+\mdfdefinestyle{MyFrame}{%
+    outerlinewidth=2pt,
+    innertopmargin=\baselineskip,
+    innerbottommargin=\baselineskip,
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{Project Description for iSESnapchat}
+\rhead{\thepage}
+%\pagenumbering{arabic}
+
+\usepackage{minted}
+\definecolor{bg}{rgb}{0.53,0.54,0.48}
+%\setcounter{secnumdepth}{-1}
+
+\title{iSESnapchat}
+\author{Cameron Pelkey\\John Reynolds}
+\date{November 6, 2013}
+
+\usepackage[backend=bibtex, style=numeric-comp]{biblatex}
+\addbibresource{ProjectOutline.bib}
+
+%******************************************************************************
+\begin{document}
+\maketitle
+
+\chapter{Introduction}
+\section{Purpose}
+
+
+\section{Motivation}
+
+
+\chapter{Overall Description}
+\section{Operating Environment}
+
+
+
+\section{Design and Implementation Constraints}
+
+
+
+\section{Assumptions and Dependencies}
+
+
+
+\section{System Use Outline}
+
+
+
+\chapter{Final Deliverable}
+\section{Implementation and Demonstration}
+
+
+\printbibliography 
+\end{document}
