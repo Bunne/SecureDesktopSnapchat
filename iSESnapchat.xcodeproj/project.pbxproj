@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		F589B80B180E47440040ABB5 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F589B80A180E47440040ABB5 /* Cocoa.framework */; };
 		F589B815180E47440040ABB5 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = F589B813180E47440040ABB5 /* InfoPlist.strings */; };
-		F589B817180E47440040ABB5 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F589B816180E47440040ABB5 /* main.m */; };
+		F589B817180E47440040ABB5 /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = F589B816180E47440040ABB5 /* main.mm */; };
 		F589B81B180E47440040ABB5 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = F589B819180E47440040ABB5 /* Credits.rtf */; };
 		F589B81E180E47440040ABB5 /* ISESAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F589B81D180E47440040ABB5 /* ISESAppDelegate.m */; };
 		F589B821180E47440040ABB5 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = F589B81F180E47440040ABB5 /* MainMenu.xib */; };
@@ -38,7 +38,7 @@
 		F589B80F180E47440040ABB5 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		F589B812180E47440040ABB5 /* iSESnapchat-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "iSESnapchat-Info.plist"; sourceTree = "<group>"; };
 		F589B814180E47440040ABB5 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		F589B816180E47440040ABB5 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		F589B816180E47440040ABB5 /* main.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = main.mm; sourceTree = "<group>"; };
 		F589B818180E47440040ABB5 /* iSESnapchat-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "iSESnapchat-Prefix.pch"; sourceTree = "<group>"; };
 		F589B81A180E47440040ABB5 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = en; path = en.lproj/Credits.rtf; sourceTree = "<group>"; };
 		F589B81C180E47440040ABB5 /* ISESAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ISESAppDelegate.h; sourceTree = "<group>"; };
@@ -129,7 +129,7 @@
 			children = (
 				F589B812180E47440040ABB5 /* iSESnapchat-Info.plist */,
 				F589B813180E47440040ABB5 /* InfoPlist.strings */,
-				F589B816180E47440040ABB5 /* main.m */,
+				F589B816180E47440040ABB5 /* main.mm */,
 				F589B818180E47440040ABB5 /* iSESnapchat-Prefix.pch */,
 				F589B819180E47440040ABB5 /* Credits.rtf */,
 			);
@@ -254,7 +254,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F589B81E180E47440040ABB5 /* ISESAppDelegate.m in Sources */,
-				F589B817180E47440040ABB5 /* main.m in Sources */,
+				F589B817180E47440040ABB5 /* main.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -387,7 +387,18 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "iSESnapchat/iSESnapchat-Prefix.pch";
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					opencv/include,
+				);
 				INFOPLIST_FILE = "iSESnapchat/iSESnapchat-Info.plist";
+				LIBRARY_SEARCH_PATHS = opencv/lib;
+				OTHER_LDFLAGS = (
+					"-lopencv_core",
+					"-lopencv_highgui",
+					"-lopencv_imgproc",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -400,7 +411,18 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "iSESnapchat/iSESnapchat-Prefix.pch";
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					opencv/include,
+				);
 				INFOPLIST_FILE = "iSESnapchat/iSESnapchat-Info.plist";
+				LIBRARY_SEARCH_PATHS = opencv/lib;
+				OTHER_LDFLAGS = (
+					"-lopencv_core",
+					"-lopencv_highgui",
+					"-lopencv_imgproc",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -465,6 +487,7 @@
 				F589B83A180E47440040ABB5 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		F589B83B180E47440040ABB5 /* Build configuration list for PBXNativeTarget "iSESnapchatTests" */ = {
 			isa = XCConfigurationList;
@@ -473,6 +496,7 @@
 				F589B83D180E47440040ABB5 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

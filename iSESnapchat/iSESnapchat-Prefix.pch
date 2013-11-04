@@ -6,4 +6,6 @@
 
 #ifdef __OBJC__
     #import <Cocoa/Cocoa.h>
+    #import "opencv/cv.h"
+    #import <Foundation/Foundation.h>
 #endif
