@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		EAA71DA618276BAE00A2A5F0 /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EAA71DA418276BAE00A2A5F0 /* libcrypto.a */; };
+		EAA71DA718276BAE00A2A5F0 /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EAA71DA518276BAE00A2A5F0 /* libssl.a */; };
 		F589B80B180E47440040ABB5 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F589B80A180E47440040ABB5 /* Cocoa.framework */; };
 		F589B815180E47440040ABB5 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = F589B813180E47440040ABB5 /* InfoPlist.strings */; };
 		F589B817180E47440040ABB5 /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = F589B816180E47440040ABB5 /* main.mm */; };
@@ -31,6 +33,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		EAA71DA418276BAE00A2A5F0 /* libcrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libcrypto.a; sourceTree = "<group>"; };
+		EAA71DA518276BAE00A2A5F0 /* libssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libssl.a; sourceTree = "<group>"; };
 		F589B807180E47440040ABB5 /* iSESnapchat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iSESnapchat.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F589B80A180E47440040ABB5 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		F589B80D180E47440040ABB5 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -58,6 +62,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				F589B80B180E47440040ABB5 /* Cocoa.framework in Frameworks */,
+				EAA71DA618276BAE00A2A5F0 /* libcrypto.a in Frameworks */,
+				EAA71DA718276BAE00A2A5F0 /* libssl.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -95,6 +101,8 @@
 		F589B809180E47440040ABB5 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				EAA71DA418276BAE00A2A5F0 /* libcrypto.a */,
+				EAA71DA518276BAE00A2A5F0 /* libssl.a */,
 				F589B80A180E47440040ABB5 /* Cocoa.framework */,
 				F589B829180E47440040ABB5 /* XCTest.framework */,
 				F589B80C180E47440040ABB5 /* Other Frameworks */,
@@ -393,7 +401,10 @@
 					opencv/include,
 				);
 				INFOPLIST_FILE = "iSESnapchat/iSESnapchat-Info.plist";
-				LIBRARY_SEARCH_PATHS = opencv/lib;
+				LIBRARY_SEARCH_PATHS = (
+					opencv/lib,
+					/Volumes/Poketech_Work/SecureDesktopSnapchat,
+				);
 				OTHER_LDFLAGS = (
 					"-lopencv_core",
 					"-lopencv_highgui",
@@ -417,7 +428,10 @@
 					opencv/include,
 				);
 				INFOPLIST_FILE = "iSESnapchat/iSESnapchat-Info.plist";
-				LIBRARY_SEARCH_PATHS = opencv/lib;
+				LIBRARY_SEARCH_PATHS = (
+					opencv/lib,
+					/Volumes/Poketech_Work/SecureDesktopSnapchat,
+				);
 				OTHER_LDFLAGS = (
 					"-lopencv_core",
 					"-lopencv_highgui",
