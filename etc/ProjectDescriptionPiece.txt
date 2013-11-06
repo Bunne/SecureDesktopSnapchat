@@ -1,5 +1,6 @@
 Works Cited
 Hillegass, A., & Preble, A. (2011). Cocoa programming for mac os x. (4th ed.). Upper Saddle River, New Jersey: Pearson Education Inc.
+
 The Programming Environment
 One of the big decisions the group needed to make initially was what language and environment we wanted to build our project on. After doing some research on our options we settled on using Objective-C in the in MAC OSX Cocoa environment. We also decided that we would use Github in order keep a working repository for us to use throughout development.
 
