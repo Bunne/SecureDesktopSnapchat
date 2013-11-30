@@ -36,6 +36,9 @@
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="system"/>
                         </buttonCell>
+                        <connections>
+                            <action selector="openSnap:" target="213" id="E1n-fo-0Be"/>
+                        </connections>
                     </button>
                 </subviews>
             </view>

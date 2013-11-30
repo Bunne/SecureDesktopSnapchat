@@ -9,7 +9,11 @@ int main(int argc, char *argv[])
                     withIntermediateDirectories:YES
                     attributes:nil
                     error:nil]){
-        printf("Created");
+//        printf("Created");
     }
+    // Now that it is created we want to know if a private key exists
+    // Create public/private key pair here if does not exist
+    
+    
     return NSApplicationMain(argc,  (const char **) argv);
 }

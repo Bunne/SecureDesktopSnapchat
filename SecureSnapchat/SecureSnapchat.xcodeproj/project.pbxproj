@@ -13,6 +13,7 @@
 		9465D04F0A5C1CC4005B01CA /* MyController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9465D04E0A5C1CC4005B01CA /* MyController.mm */; };
 		94A3B1AA0AB55FA400C662EC /* Quartz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 942044D10A3731BB005430F1 /* Quartz.framework */; };
 		AFC271DE179B066100468E57 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = AFC271DC179B066100468E57 /* MainMenu.xib */; };
+		EACE65D2184A05F1002A80EC /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8D1107310486CEB800E47090 /* Info.plist */; };
 		EAD430301849D9FB004D34AF /* SelectFiles.m in Sources */ = {isa = PBXBuildFile; fileRef = EAD4302F1849D9FB004D34AF /* SelectFiles.m */; };
 		EAD430331849E89C004D34AF /* AddPeople.m in Sources */ = {isa = PBXBuildFile; fileRef = EAD430321849E89C004D34AF /* AddPeople.m */; };
 /* End PBXBuildFile section */
@@ -181,6 +182,7 @@
 			files = (
 				8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */,
 				AFC271DE179B066100468E57 /* MainMenu.xib in Resources */,
+				EACE65D2184A05F1002A80EC /* Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
