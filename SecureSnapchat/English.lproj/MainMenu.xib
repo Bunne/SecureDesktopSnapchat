@@ -61,15 +61,12 @@
                                     <action selector="orderFrontStandardAboutPanel:" target="-2" id="142"/>
                                 </connections>
                             </menuItem>
-                            <menuItem isSeparatorItem="YES" id="7io-5g-SaR">
-                                <modifierMask key="keyEquivalentModifierMask" command="YES"/>
-                            </menuItem>
                             <menuItem title="Add Contact" keyEquivalent="a" id="3Hi-AN-AoK">
                                 <connections>
                                     <action selector="addContact:" target="213" id="c1m-OU-GFN"/>
                                 </connections>
                             </menuItem>
-                            <menuItem isSeparatorItem="YES" id="149">
+                            <menuItem isSeparatorItem="YES" id="7io-5g-SaR">
                                 <modifierMask key="keyEquivalentModifierMask" command="YES"/>
                             </menuItem>
                             <menuItem title="Quit" keyEquivalent="q" id="136">

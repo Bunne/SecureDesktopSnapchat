@@ -7,8 +7,6 @@
 //
 
 #import <Foundation/Foundation.h>
-
-#import <Foundation/Foundation.h>
 #import <Cocoa/Cocoa.h>
 #import <Quartz/Quartz.h>
 #import <QTKit/QTKit.h>
