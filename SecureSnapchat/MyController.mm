@@ -68,7 +68,7 @@
     AddPeople *delegateSelf = [[AddPeople alloc]init];
     
 //    NSString *contactsdir = [NSString stringWithFormat:@"/Users/Klick/Desktop/SecureSnapchat/.contacts/"];
-    NSString *conts = [NSHomeDirectory() stringByAppendingString:@"/.contacts/"];
+    NSString *conts = [NSHomeDirectory() stringByAppendingString:@"/.snap/contacts/"];
     NSFileManager *fileManager = [NSFileManager defaultManager];
 
     NSOpenPanel *openPanel = [NSOpenPanel openPanel];

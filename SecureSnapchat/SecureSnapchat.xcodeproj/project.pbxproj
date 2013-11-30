@@ -28,7 +28,6 @@
 		942044D10A3731BB005430F1 /* Quartz.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quartz.framework; path = /System/Library/Frameworks/Quartz.framework; sourceTree = "<absolute>"; };
 		9465D04D0A5C1CC4005B01CA /* MyController.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = MyController.h; sourceTree = "<group>"; };
 		9465D04E0A5C1CC4005B01CA /* MyController.mm */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.objcpp; path = MyController.mm; sourceTree = "<group>"; };
-		94EC12790A5C134F0042E517 /* Read me */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Read me"; sourceTree = "<group>"; };
 		AFC271DD179B066100468E57 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		AFF1974E17A1F5F6009EF1BE /* snapchat.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = snapchat.entitlements; sourceTree = "<group>"; };
 		EAD4302E1849D9FB004D34AF /* SelectFiles.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectFiles.h; sourceTree = "<group>"; };
@@ -92,7 +91,6 @@
 		29B97314FDCFA39411CA2CEA /* image-picker */ = {
 			isa = PBXGroup;
 			children = (
-				94EC12790A5C134F0042E517 /* Read me */,
 				080E96DDFE201D6D7F000001 /* Classes */,
 				29B97315FDCFA39411CA2CEA /* Other Sources */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
