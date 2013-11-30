@@ -13,9 +13,8 @@
 		9465D04F0A5C1CC4005B01CA /* MyController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9465D04E0A5C1CC4005B01CA /* MyController.mm */; };
 		94A3B1AA0AB55FA400C662EC /* Quartz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 942044D10A3731BB005430F1 /* Quartz.framework */; };
 		AFC271DE179B066100468E57 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = AFC271DC179B066100468E57 /* MainMenu.xib */; };
+		EA424E12184AA12A00B99219 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EA424E11184AA12A00B99219 /* Security.framework */; };
 		EACE65D2184A05F1002A80EC /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8D1107310486CEB800E47090 /* Info.plist */; };
-		EACE65D5184A0A66002A80EC /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EACE65D3184A0A66002A80EC /* libcrypto.a */; };
-		EACE65D6184A0A66002A80EC /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EACE65D4184A0A66002A80EC /* libssl.a */; };
 		EACE65D8184A0A85002A80EC /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EACE65D7184A0A85002A80EC /* Images.xcassets */; };
 		EAD430301849D9FB004D34AF /* SelectFiles.m in Sources */ = {isa = PBXBuildFile; fileRef = EAD4302F1849D9FB004D34AF /* SelectFiles.m */; };
 		EAD430331849E89C004D34AF /* AddPeople.m in Sources */ = {isa = PBXBuildFile; fileRef = EAD430321849E89C004D34AF /* AddPeople.m */; };
@@ -34,9 +33,11 @@
 		9465D04E0A5C1CC4005B01CA /* MyController.mm */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.objcpp; path = MyController.mm; sourceTree = "<group>"; };
 		AFC271DD179B066100468E57 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		AFF1974E17A1F5F6009EF1BE /* snapchat.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = snapchat.entitlements; sourceTree = "<group>"; };
+		EA424E11184AA12A00B99219 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		EACE65D3184A0A66002A80EC /* libcrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcrypto.a; path = ../libs/libcrypto.a; sourceTree = "<group>"; };
 		EACE65D4184A0A66002A80EC /* libssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libssl.a; path = ../libs/libssl.a; sourceTree = "<group>"; };
 		EACE65D7184A0A85002A80EC /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = SecureSnapchat/Images.xcassets; sourceTree = "<group>"; };
+		EACE65D9184A9726002A80EC /* libssl.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libssl.dylib; path = usr/lib/libssl.dylib; sourceTree = SDKROOT; };
 		EAD4302E1849D9FB004D34AF /* SelectFiles.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectFiles.h; sourceTree = "<group>"; };
 		EAD4302F1849D9FB004D34AF /* SelectFiles.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectFiles.m; sourceTree = "<group>"; };
 		EAD430311849E89C004D34AF /* AddPeople.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddPeople.h; sourceTree = "<group>"; };
@@ -50,8 +51,7 @@
 			files = (
 				94A3B1AA0AB55FA400C662EC /* Quartz.framework in Frameworks */,
 				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
-				EACE65D5184A0A66002A80EC /* libcrypto.a in Frameworks */,
-				EACE65D6184A0A66002A80EC /* libssl.a in Frameworks */,
+				EA424E12184AA12A00B99219 /* Security.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -132,6 +132,8 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				EA424E11184AA12A00B99219 /* Security.framework */,
+				EACE65D9184A9726002A80EC /* libssl.dylib */,
 				EACE65D3184A0A66002A80EC /* libcrypto.a */,
 				EACE65D4184A0A66002A80EC /* libssl.a */,
 				1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */,

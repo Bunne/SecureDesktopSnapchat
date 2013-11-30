@@ -2,7 +2,6 @@
 #import "SelectFiles.h"
 #import "AddPeople.h"
 
-
 @implementation MyController
 
 /* ADDING CONTACT
@@ -102,7 +101,7 @@
 */
 - (IBAction) openSnap:(id)sender
 {
-    NSString *ourKey = [NSHomeDirectory() stringByAppendingString:@"/.snap/me"];
+    NSString *ourKey = [NSHomeDirectory() stringByAppendingString:@"/.snap/me.pem"];
     NSFileManager *fileManager = [NSFileManager defaultManager];
     
     NSOpenPanel *openPanel = [NSOpenPanel openPanel];
