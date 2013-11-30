@@ -67,7 +67,8 @@
 {
     AddPeople *delegateSelf = [[AddPeople alloc]init];
     
-    NSString *contactsdir = [NSString stringWithFormat:@"/Users/Klick/Desktop/SecureSnapchat/.contacts/"];
+//    NSString *contactsdir = [NSString stringWithFormat:@"/Users/Klick/Desktop/SecureSnapchat/.contacts/"];
+    NSString *conts = [NSHomeDirectory() stringByAppendingString:@"/.contacts/"];
     NSFileManager *fileManager = [NSFileManager defaultManager];
 
     NSOpenPanel *openPanel = [NSOpenPanel openPanel];
@@ -83,12 +84,12 @@
         for( int i = 0; i < [files count]; i++ )
         {
             NSString* fileName = [files objectAtIndex:i];
-            NSString* fn = [contactsdir stringByAppendingString:[fileName lastPathComponent]];
-//            printf("%s\n", [fileName UTF8String]);
-//            printf("%s\n", [fn UTF8String]);
+            NSString* fn = [conts stringByAppendingString:[fileName lastPathComponent]];
+            printf("%s\n", [fileName UTF8String]);
+            printf("%s\n", [fn UTF8String]);
             if ([fileManager moveItemAtPath:fileName
                                      toPath:fn  error:NULL]) {
-//                printf("Copied successfully\n");
+                printf("Copied successfully\n");
             }
         }
     }
