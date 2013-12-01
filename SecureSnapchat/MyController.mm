@@ -1,6 +1,7 @@
 #import "MyController.h"
 #import "SelectFiles.h"
 #import "AddPeople.h"
+#import "NotificationDelegate.h"
 
 @implementation MyController
 
@@ -38,6 +39,49 @@
     }
 }
 
+- (IBAction) shareContact:(id)sender{
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NotificationDelegate *delegateSelf = [[NotificationDelegate alloc]init];
+    NSString *ourKey = [NSHomeDirectory() stringByAppendingString:@"/.snap/me.pub"];
+    NSString *toHome = [NSHomeDirectory() stringByAppendingString:@"/Desktop/"];
+    NSString *prompt = @"Please enter your contact name:";
+    NSString *defaultValue = @"";
+    
+    NSAlert *alert = [NSAlert alertWithMessageText: prompt
+                                     defaultButton:@"Save"
+                                   alternateButton:@"Cancel"
+                                       otherButton:nil
+                         informativeTextWithFormat:@"Enter the name you wish your contact to recognize you by."];
+    
+    NSTextField *input = [[NSTextField alloc] initWithFrame:NSMakeRect(0, 0, 200, 24)];
+    [input setStringValue:defaultValue];
+    [alert setAccessoryView:input];
+    NSInteger button = [alert runModal];
+    if (button == NSAlertDefaultReturn) {
+        [input validateEditing];
+
+        NSString *contactName = [[input stringValue] stringByAppendingString:@".pub"];
+        NSString *copyTo = [toHome stringByAppendingString:contactName];
+
+        if ([fileManager copyItemAtPath:ourKey toPath:copyTo error:nil]){
+            NSUserNotification *notification = [[NSUserNotification alloc] init];
+            [[NSUserNotificationCenter defaultUserNotificationCenter] setDelegate:delegateSelf];
+            notification.title = @"Contact Copied!";
+            notification.informativeText = [NSString stringWithFormat:@"%@ copied to Desktop.", contactName];
+            notification.soundName = NSUserNotificationDefaultSoundName;
+            [[NSUserNotificationCenter defaultUserNotificationCenter] deliverNotification:notification];
+        }
+
+
+    } else if (button == NSAlertAlternateReturn) {
+//        NSLog(@"User cancelled");
+    } else {
+//        NSLog(@"bla");
+    }
+    
+    
+    
+}
 
 /* Launch Picture Taker
     Sets up and initializes the picture taker

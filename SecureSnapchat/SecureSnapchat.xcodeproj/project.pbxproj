@@ -14,6 +14,9 @@
 		94A3B1AA0AB55FA400C662EC /* Quartz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 942044D10A3731BB005430F1 /* Quartz.framework */; };
 		AFC271DE179B066100468E57 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = AFC271DC179B066100468E57 /* MainMenu.xib */; };
 		EA424E12184AA12A00B99219 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EA424E11184AA12A00B99219 /* Security.framework */; };
+		EA424E15184AAFE300B99219 /* NotificationDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = EA424E14184AAFE300B99219 /* NotificationDelegate.m */; };
+		EA424E16184AB47500B99219 /* snapchat.entitlements in Resources */ = {isa = PBXBuildFile; fileRef = AFF1974E17A1F5F6009EF1BE /* snapchat.entitlements */; };
+		EA424E18184AB57400B99219 /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = EA424E17184AB57400B99219 /* icon.png */; };
 		EACE65D2184A05F1002A80EC /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8D1107310486CEB800E47090 /* Info.plist */; };
 		EACE65D8184A0A85002A80EC /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EACE65D7184A0A85002A80EC /* Images.xcassets */; };
 		EAD430301849D9FB004D34AF /* SelectFiles.m in Sources */ = {isa = PBXBuildFile; fileRef = EAD4302F1849D9FB004D34AF /* SelectFiles.m */; };
@@ -34,6 +37,9 @@
 		AFC271DD179B066100468E57 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		AFF1974E17A1F5F6009EF1BE /* snapchat.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = snapchat.entitlements; sourceTree = "<group>"; };
 		EA424E11184AA12A00B99219 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		EA424E13184AAFE300B99219 /* NotificationDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationDelegate.h; sourceTree = "<group>"; };
+		EA424E14184AAFE300B99219 /* NotificationDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationDelegate.m; sourceTree = "<group>"; };
+		EA424E17184AB57400B99219 /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon.png; sourceTree = "<group>"; };
 		EACE65D3184A0A66002A80EC /* libcrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcrypto.a; path = ../libs/libcrypto.a; sourceTree = "<group>"; };
 		EACE65D4184A0A66002A80EC /* libssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libssl.a; path = ../libs/libssl.a; sourceTree = "<group>"; };
 		EACE65D7184A0A85002A80EC /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = SecureSnapchat/Images.xcassets; sourceTree = "<group>"; };
@@ -67,6 +73,8 @@
 				EAD4302F1849D9FB004D34AF /* SelectFiles.m */,
 				EAD430311849E89C004D34AF /* AddPeople.h */,
 				EAD430321849E89C004D34AF /* AddPeople.m */,
+				EA424E13184AAFE300B99219 /* NotificationDelegate.h */,
+				EA424E14184AAFE300B99219 /* NotificationDelegate.m */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -100,6 +108,7 @@
 		29B97314FDCFA39411CA2CEA /* image-picker */ = {
 			isa = PBXGroup;
 			children = (
+				EA424E17184AB57400B99219 /* icon.png */,
 				080E96DDFE201D6D7F000001 /* Classes */,
 				29B97315FDCFA39411CA2CEA /* Other Sources */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
@@ -195,7 +204,9 @@
 			files = (
 				8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */,
 				EACE65D8184A0A85002A80EC /* Images.xcassets in Resources */,
+				EA424E18184AB57400B99219 /* icon.png in Resources */,
 				AFC271DE179B066100468E57 /* MainMenu.xib in Resources */,
+				EA424E16184AB47500B99219 /* snapchat.entitlements in Resources */,
 				EACE65D2184A05F1002A80EC /* Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -208,6 +219,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				EAD430331849E89C004D34AF /* AddPeople.m in Sources */,
+				EA424E15184AAFE300B99219 /* NotificationDelegate.m in Sources */,
 				8D11072D0486CEB800E47090 /* main.m in Sources */,
 				9465D04F0A5C1CC4005B01CA /* MyController.mm in Sources */,
 				EAD430301849D9FB004D34AF /* SelectFiles.m in Sources */,
@@ -241,6 +253,7 @@
 			buildSettings = {
 				ARCHS = $NATIVE_ARCH;
 				CODE_SIGN_ENTITLEMENTS = snapchat.entitlements;
+				CODE_SIGN_IDENTITY = "-";
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = "";
@@ -270,6 +283,7 @@
 					ppc,
 				);
 				CODE_SIGN_ENTITLEMENTS = snapchat.entitlements;
+				CODE_SIGN_IDENTITY = "-";
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",

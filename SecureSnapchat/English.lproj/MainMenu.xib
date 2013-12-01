@@ -66,6 +66,12 @@
                                     <action selector="addContact:" target="213" id="c1m-OU-GFN"/>
                                 </connections>
                             </menuItem>
+                            <menuItem title="Share Contact" id="Zq5-NW-0t3">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="shareContact:" target="213" id="lph-2i-D7U"/>
+                                </connections>
+                            </menuItem>
                             <menuItem isSeparatorItem="YES" id="7io-5g-SaR">
                                 <modifierMask key="keyEquivalentModifierMask" command="YES"/>
                             </menuItem>
