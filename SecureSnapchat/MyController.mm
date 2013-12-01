@@ -39,6 +39,10 @@
     }
 }
 
+
+/* SHARING CONTACT
+ Copies the user's public key to the desktop.
+ */
 - (IBAction) shareContact:(id)sender{
     NSFileManager *fileManager = [NSFileManager defaultManager];
     NotificationDelegate *delegateSelf = [[NotificationDelegate alloc]init];

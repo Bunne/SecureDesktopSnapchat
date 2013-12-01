@@ -6,12 +6,12 @@
         "center" : {
           "mode" : "fill",
           "width" : 35,
-          "height" : 1
+          "height" : 18
         },
         "capInsets" : {
           "bottom" : 35,
-          "top" : 29,
-          "right" : 30,
+          "top" : 12,
+          "right" : 33,
           "left" : 0
         }
       },
