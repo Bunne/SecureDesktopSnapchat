@@ -1,9 +1,27 @@
 {
   "images" : [
     {
+      "resizing" : {
+        "mode" : "9-part",
+        "center" : {
+          "mode" : "fill",
+          "width" : 35,
+          "height" : 1
+        },
+        "capInsets" : {
+          "bottom" : 35,
+          "top" : 29,
+          "right" : 30,
+          "left" : 0
+        }
+      },
       "idiom" : "universal",
-      "scale" : "1x",
-      "filename" : "icon.png"
+      "filename" : "icon.png",
+      "scale" : "1x"
+    },
+    {
+      "idiom" : "universal",
+      "scale" : "2x"
     }
   ],
   "info" : {
