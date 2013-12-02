@@ -225,7 +225,7 @@
                 
                 //encrypt the symmetric key with the public key of the recipient
                 //$openssl rsautl -encrypt -in <input_file> -inkey <llave> -out <output_file>
-                NSArray *encryptSymetricKeyArgs = [NSArray arrayWithObjects:@"aes-256-cbc",
+                NSArray *encryptSymetricKeyArgs = [NSArray arrayWithObjects:@"rsautl",
                                                    @"-encrypt",
                                                    @"-in", keyfileName,
                                                    @"-pubin",
@@ -447,6 +447,9 @@
                                                @"-out", canary, nil];
                     [[NSTask launchedTaskWithLaunchPath:sslPath arguments:decryptImage] waitUntilExit];
                     NSImage* decryptedImage = [[NSImage alloc] initWithContentsOfFile:canary];
+
+                    [fileManager removeItemAtPath:coalmine error:nil];
+                    [fileManager removeItemAtPath:canary error:nil];
                     
                     NSAlert *reset_alert = [[NSAlert alloc] init];
                     [reset_alert addButtonWithTitle:@"OK"];
