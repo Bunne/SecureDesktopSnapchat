@@ -293,8 +293,12 @@
             [[NSTask launchedTaskWithLaunchPath:unzipPath arguments:zipargs] waitUntilExit];
             
         }
-        
-        
+        NSArray *toEmpty = [fileManager contentsOfDirectoryAtPath:enclave error:nil];
+        for (NSString *x in toEmpty){
+            if([fileManager removeItemAtPath:[enclave stringByAppendingString:x] error:nil]){
+                printf("Deleted %s \n", [x UTF8String]);
+            }
+        }
     }
 
 ////////////////////////////////////////////////////////////////////////////////

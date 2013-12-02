@@ -41,10 +41,7 @@
 		EA424E13184AAFE300B99219 /* NotificationDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationDelegate.h; sourceTree = "<group>"; };
 		EA424E14184AAFE300B99219 /* NotificationDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationDelegate.m; sourceTree = "<group>"; };
 		EA424E17184AB57400B99219 /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon.png; sourceTree = "<group>"; };
-		EACE65D3184A0A66002A80EC /* libcrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcrypto.a; path = ../libs/libcrypto.a; sourceTree = "<group>"; };
-		EACE65D4184A0A66002A80EC /* libssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libssl.a; path = ../libs/libssl.a; sourceTree = "<group>"; };
 		EACE65D7184A0A85002A80EC /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = SecureSnapchat/Images.xcassets; sourceTree = "<group>"; };
-		EACE65D9184A9726002A80EC /* libssl.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libssl.dylib; path = usr/lib/libssl.dylib; sourceTree = SDKROOT; };
 		EAD4302E1849D9FB004D34AF /* SelectFiles.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectFiles.h; sourceTree = "<group>"; };
 		EAD4302F1849D9FB004D34AF /* SelectFiles.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectFiles.m; sourceTree = "<group>"; };
 		EAD430311849E89C004D34AF /* AddPeople.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddPeople.h; sourceTree = "<group>"; };
@@ -147,9 +144,6 @@
 			isa = PBXGroup;
 			children = (
 				EA424E11184AA12A00B99219 /* Security.framework */,
-				EACE65D9184A9726002A80EC /* libssl.dylib */,
-				EACE65D3184A0A66002A80EC /* libcrypto.a */,
-				EACE65D4184A0A66002A80EC /* libssl.a */,
 				1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */,
 				1058C7A2FEA54F0111CA2CBB /* Other Frameworks */,
 			);
