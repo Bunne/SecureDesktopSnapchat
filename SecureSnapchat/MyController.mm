@@ -155,8 +155,9 @@
                 NSString *finalfileName = [fileNameBase stringByAppendingString:@".snap"];
                 
                 //make a "secure" key, write it to a file ----^
-                for (int x=0;x<20;data[x++] = (char)('A' + (arc4random_uniform(26))));
-                [[[NSString alloc] initWithBytes:data
+                char data2[20];
+                for (int x=0;x<20;data2[x++] = (char)('A' + (arc4random_uniform(26))));
+                [[[NSString alloc] initWithBytes:data2
                                           length:20
                                         encoding:NSUTF8StringEncoding] writeToFile:keyfileName atomically:YES encoding:NSUTF8StringEncoding error:nil];
                 
@@ -179,14 +180,45 @@
                 //$openssl rsautl -encrypt -in <input_file> -inkey <llave> -out <output_file>
                 NSArray *encryptSymetricKeyArgs = [NSArray arrayWithObjects:@"rsautl",
                                                    @"-encrypt",
-                                                   @"-in", jpegfileName_enc,
+                                                   @"-in", keyfileName,
+                                                   @"-pubin",
                                                    @"-inkey", fileName,
                                                    @"-out", keyfileName_enc, nil];
                 
                 [[NSTask launchedTaskWithLaunchPath:sslPath arguments:encryptSymetricKeyArgs] waitUntilExit];
                 
-                //zip the encrypted symmetric key and the encrypted image into a .snap file
                 
+                //change working directory
+                NSFileManager *filemgr;
+                NSString *currentpath;
+                filemgr = [NSFileManager defaultManager];
+                currentpath = [filemgr currentDirectoryPath];
+                if ([filemgr changeCurrentDirectoryPath: [NSHomeDirectory() stringByAppendingString:@"/.snap/enclave/"]] == NO)
+                    NSLog (@"Cannot change directory.");
+                
+                
+                //zip the encrypted symmetric key and the encrypted image into a .snap file
+                NSString *zipPath = @"/usr/bin/zip";
+                NSString *specialjpeg = [[[NSString alloc] initWithBytes:data
+                                                                 length:20
+                                                               encoding:NSUTF8StringEncoding] stringByAppendingString:@".snaptmpenc"];
+                NSString *specialkey = [[[NSString alloc] initWithBytes:data
+                                                                  length:20
+                                                                encoding:NSUTF8StringEncoding] stringByAppendingString:@".snapkeyenc"];
+                NSArray *zipArgs = [NSArray arrayWithObjects:finalfileName,
+                                    specialjpeg,
+                                    specialkey, nil];
+                [[NSTask launchedTaskWithLaunchPath:zipPath arguments:zipArgs] waitUntilExit];
+                //[workspace setIcon:[[NSImage alloc] initWithContentsOfFile:@"icon.png"] forFile:finalfileName options:nil];
+                
+                //change back
+                if ([filemgr changeCurrentDirectoryPath: currentpath] == NO)
+                    NSLog (@"Cannot change directory.");
+                     
+                //delete the originals
+                NSString *rmPath = @"/bin/rm";
+                NSArray *rmArgs = [NSArray arrayWithObjects:jpegfileName, jpegfileName_enc, keyfileName, keyfileName_enc, nil];
+                [[NSTask launchedTaskWithLaunchPath:rmPath arguments:rmArgs] waitUntilExit];
                 
                 //example...
 //                NSString *passInCommand = [@"-passin pass:" stringByAppendingString:pass];
