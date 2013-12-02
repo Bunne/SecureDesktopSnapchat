@@ -7,6 +7,24 @@
 
 @implementation MyController
 
+
+/* FORGOT PASSWORD
+    Clear keys, generate new ones.
+ */
+- (IBAction)forgotPassword:(id)sender
+{
+    
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSString *file_pem = [NSHomeDirectory() stringByAppendingString:@"/.snap/me.pem"];
+    NSString *file_pem_pub = [NSHomeDirectory() stringByAppendingString:@"/.snap/me.pub"];
+    if([fileManager removeItemAtPath:file_pem error:nil] and
+       [fileManager removeItemAtPath:file_pem_pub error:nil]){
+        printf("Deleted %s \n", [file_pem UTF8String]);
+        printf("Deleted %s \n", [file_pem_pub UTF8String]);
+    }
+
+}
+
 /* ADDING CONTACT
     Allows the user to select a .public key to add to their contacts list
 */
@@ -290,8 +308,9 @@
             NSArray *zipargs = [NSArray arrayWithObjects: fileName,
                                                             @"*.snap*",
                                                             @"-d", enclave,nil];
-            [[NSTask launchedTaskWithLaunchPath:unzipPath arguments:zipargs] waitUntilExit];
             
+            
+            [[NSTask launchedTaskWithLaunchPath:unzipPath arguments:zipargs] waitUntilExit];
         }
         NSArray *toEmpty = [fileManager contentsOfDirectoryAtPath:enclave error:nil];
         for (NSString *x in toEmpty){

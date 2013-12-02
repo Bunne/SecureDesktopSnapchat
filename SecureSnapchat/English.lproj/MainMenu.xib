@@ -61,6 +61,12 @@
                                     <action selector="orderFrontStandardAboutPanel:" target="-2" id="142"/>
                                 </connections>
                             </menuItem>
+                            <menuItem title="Forgot Password" id="sNy-SJ-137">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="forgotPassword:" target="213" id="2rO-C9-S7C"/>
+                                </connections>
+                            </menuItem>
                             <menuItem title="Add Contact" keyEquivalent="a" id="3Hi-AN-AoK">
                                 <connections>
                                     <action selector="addContact:" target="213" id="c1m-OU-GFN"/>
