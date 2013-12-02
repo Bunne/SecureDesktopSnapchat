@@ -23,6 +23,7 @@
 		EAD430331849E89C004D34AF /* AddPeople.m in Sources */ = {isa = PBXBuildFile; fileRef = EAD430321849E89C004D34AF /* AddPeople.m */; };
 		F552BE7C184C2EB00097DC29 /* NSImage+saveAsJpegWithName.m in Sources */ = {isa = PBXBuildFile; fileRef = F552BE7B184C2EB00097DC29 /* NSImage+saveAsJpegWithName.m */; };
 		F552BE7E184C74820097DC29 /* Images-2.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F552BE7D184C74820097DC29 /* Images-2.xcassets */; };
+		F552BE80184C9ACC0097DC29 /* Image Viewer.xib in Resources */ = {isa = PBXBuildFile; fileRef = F552BE7F184C9ACC0097DC29 /* Image Viewer.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -50,6 +51,7 @@
 		F552BE7A184C2EB00097DC29 /* NSImage+saveAsJpegWithName.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSImage+saveAsJpegWithName.h"; sourceTree = "<group>"; };
 		F552BE7B184C2EB00097DC29 /* NSImage+saveAsJpegWithName.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSImage+saveAsJpegWithName.m"; sourceTree = "<group>"; };
 		F552BE7D184C74820097DC29 /* Images-2.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = "Images-2.xcassets"; path = "SecureSnapchat/Images-2.xcassets"; sourceTree = "<group>"; };
+		F552BE7F184C9ACC0097DC29 /* Image Viewer.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "Image Viewer.xib"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -113,6 +115,7 @@
 			isa = PBXGroup;
 			children = (
 				EA424E17184AB57400B99219 /* icon.png */,
+				F552BE7F184C9ACC0097DC29 /* Image Viewer.xib */,
 				080E96DDFE201D6D7F000001 /* Classes */,
 				29B97315FDCFA39411CA2CEA /* Other Sources */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
@@ -219,6 +222,7 @@
 				EA424E18184AB57400B99219 /* icon.png in Resources */,
 				AFC271DE179B066100468E57 /* MainMenu.xib in Resources */,
 				EA424E16184AB47500B99219 /* snapchat.entitlements in Resources */,
+				F552BE80184C9ACC0097DC29 /* Image Viewer.xib in Resources */,
 				EACE65D2184A05F1002A80EC /* Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
