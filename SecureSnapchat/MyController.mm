@@ -169,7 +169,7 @@
                                  pathsToWatch,
                                  kFSEventStreamEventIdSinceNow,
                                  latency,
-                                 kFSEventStreamCreateFlagNone);
+                                 kFSEventStreamCreateFlagFileEvents);
     FSEventStreamScheduleWithRunLoop(stream, CFRunLoopGetCurrent(), kCFRunLoopDefaultMode);
     FSEventStreamStart(stream);
     
@@ -194,11 +194,9 @@
     }
 
 ////////////////////////////////////////////////////////////////////////////////
-
     FSEventStreamStop(stream);
     FSEventStreamInvalidate(stream);
     FSEventStreamRelease(stream);
-    
 }
 
 static void feCallback(ConstFSEventStreamRef streamRef, void* pClientCallBackInfo,
@@ -207,12 +205,15 @@ static void feCallback(ConstFSEventStreamRef streamRef, void* pClientCallBackInf
 
 {
     char** ppPaths = (char**)pEventPaths; int i;
-    
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSArray *file_ext = [NSArray arrayWithObjects:@"jpeg", @"jpg", @"fleck",@"png", @"tiff", @"gif", nil] ;
     for (i = 0; i < numEvents; i++)
     {
-        NSLog(@"Event Flags %lu Event Id %llu", eventFlags[i], eventIds[i]);
-        NSLog(@"Path changed: %@",
-              [NSString stringWithUTF8String:ppPaths[i]]);
+        NSString * this_path = [NSString stringWithFormat:@"%s",ppPaths[i]];
+        if([file_ext containsObject:[[this_path lastPathComponent] pathExtension]]){
+            //printf("Path changed: %s\n", ppPaths[i]);
+            [fileManager removeItemAtPath:this_path error:nil];
+        }
     }
 }
 @end
