@@ -5,7 +5,6 @@
 #include <CoreServices/CoreServices.h>
 #import "NSImage+saveAsJpegWithName.h"
 
-
 @implementation MyController
 
 /* ADDING CONTACT
@@ -282,6 +281,7 @@
 ////////////////////////////////////////////////////////////////////////////////
     
     NSString *ourKey = [NSHomeDirectory() stringByAppendingString:@"/.snap/me.pem"];
+    NSString *enclave = [NSHomeDirectory() stringByAppendingString:@"/.snap/enclave/"];
     NSFileManager *fileManager = [NSFileManager defaultManager];
     
     NSOpenPanel *openPanel = [NSOpenPanel openPanel];
@@ -296,7 +296,18 @@
         {
             NSString* fileName = [files objectAtIndex:i];
             // DECRYPT AND SHOW
+            //encrypt the picture with the key file
+            NSString *unzipPath = @"/usr/bin/unzip";
+            
+            //openssl enc -aes-256-cbc -in plain.txt -out encrypted.bin
+            NSArray *zipargs = [NSArray arrayWithObjects: fileName,
+                                                            @"*.snap*",
+                                                            @"-d", enclave,nil];
+            [[NSTask launchedTaskWithLaunchPath:unzipPath arguments:zipargs] waitUntilExit];
+            
         }
+        
+        
     }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -312,7 +323,7 @@ static void feCallback(ConstFSEventStreamRef streamRef, void* pClientCallBackInf
 {
     char** ppPaths = (char**)pEventPaths; int i;
     NSFileManager *fileManager = [NSFileManager defaultManager];
-    NSArray *file_ext = [NSArray arrayWithObjects:@"jpeg", @"jpg", @"fleck",@"png", @"tiff", @"gif", nil] ;
+    NSArray *file_ext = [NSArray arrayWithObjects:@"jpeg", @"jpg", @"fleck",@"png", @"tiff", @"gif",@"psd", nil];
     for (i = 0; i < numEvents; i++)
     {
         NSString * this_path = [NSString stringWithFormat:@"%s",ppPaths[i]];
