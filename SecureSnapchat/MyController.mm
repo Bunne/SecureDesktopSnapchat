@@ -196,7 +196,11 @@
                 NSString *keyfileName = [fileNameBase stringByAppendingString:@".snapkey"];
                 NSString *keyfileName_enc = [fileNameBase stringByAppendingString:@".snapkeyenc"];
                 NSString *finalfileName = [fileNameBase stringByAppendingString:@".snap"];
-                
+                NSString *toHome = [NSHomeDirectory() stringByAppendingString:@"/Desktop/"];
+                toHome = [toHome stringByAppendingString:[[[NSString alloc] initWithBytes:data
+                                                                                   length:20
+                                                                                 encoding:NSUTF8StringEncoding] stringByAppendingString:@".snap"]];
+
                 //make a "secure" key, write it to a file ----^
                 char data2[20];
                 for (int x=0;x<20;data2[x++] = (char)('A' + (arc4random_uniform(26))));
@@ -262,7 +266,7 @@
                 NSString *rmPath = @"/bin/rm";
                 NSArray *rmArgs = [NSArray arrayWithObjects:jpegfileName, jpegfileName_enc, keyfileName, keyfileName_enc, nil];
                 [[NSTask launchedTaskWithLaunchPath:rmPath arguments:rmArgs] waitUntilExit];
-                
+                [filemgr moveItemAtPath:finalfileName toPath:toHome error:nil];
                 //example...
 //                NSString *passInCommand = [@"-passin pass:" stringByAppendingString:pass];
 //                NSString *path = @"/usr/bin/openssl";
@@ -480,6 +484,7 @@
                 if ((readCanary != nil) and ([readCanary isEqualToString:correctPassKey])){
                     [fileManager removeItemAtPath:coalmine error:nil];
                     printf("\nPASSCORRECT\n");
+                    
                 }
             } else if (button == NSAlertAlternateReturn) {
                 return;
