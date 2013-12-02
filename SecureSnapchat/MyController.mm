@@ -479,7 +479,10 @@
             }
         }
     }
-
+    
+    NSWindowController *controllerWindow = [[NSWindowController alloc] initWithWindowNibName:@"Image Viewer"];
+    [controllerWindow showWindow:self];
+    
 ////////////////////////////////////////////////////////////////////////////////
     FSEventStreamStop(stream);
     FSEventStreamInvalidate(stream);
