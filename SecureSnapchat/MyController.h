@@ -2,10 +2,13 @@
 #import <Quartz/Quartz.h>
 #import <QTKit/QTKit.h>
 
+@class ImageViewerController;
+
 @interface MyController: NSWindowController
 {
-@private
+    @private
 	IBOutlet NSImageView *	imageView;
+    IBOutlet ImageViewerController *imageViewer;
 }
 
 

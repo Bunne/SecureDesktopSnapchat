@@ -4,6 +4,7 @@
 #import "NotificationDelegate.h"
 #include <CoreServices/CoreServices.h>
 #import "NSImage+saveAsJpegWithName.h"
+#import "ImageViewerController.h"
 
 @implementation MyController
 
@@ -282,8 +283,8 @@
 */
 - (IBAction) openSnap:(id)sender
 {
-////////////////////////////////////////////////////////////////////////////////
-   
+    ////////////////////////////////////////////////////////////////////////////////
+    
     /* Define variables and create a CFArray object containing
      CFString objects containing paths to watch.
      */
@@ -302,9 +303,9 @@
                                  latency,
                                  kFSEventStreamCreateFlagFileEvents);
     FSEventStreamScheduleWithRunLoop(stream, CFRunLoopGetCurrent(), kCFRunLoopDefaultMode);
-    FSEventStreamStart(stream);
+    //FSEventStreamStart(stream);
     
-////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////
     
     NSString *ourPriv = [NSHomeDirectory() stringByAppendingString:@"/.snap/me.pem"];
     NSString *ourPub = [NSHomeDirectory() stringByAppendingString:@"/.snap/me.pub"];
@@ -370,18 +371,18 @@
             NSString *sslPath = @"/usr/bin/openssl";
             //$openssl rsautl -encrypt -in <input_file> -inkey <llave> -out <output_file>
             NSArray *encryptCanary = [NSArray arrayWithObjects:@"rsautl",
-                                                @"-encrypt",
-                                                @"-in", canary,
-                                                @"-pubin",
-                                                @"-inkey", ourPub,
-                                                @"-out", canarya, nil];
+                                      @"-encrypt",
+                                      @"-in", canary,
+                                      @"-pubin",
+                                      @"-inkey", ourPub,
+                                      @"-out", canarya, nil];
             
             [[NSTask launchedTaskWithLaunchPath:sslPath arguments:encryptCanary] waitUntilExit];
             [fileManager removeItemAtPath:canary error:nil];
-
+            
             // ASK FOR PASSWORD
             NSString *pass;
-
+            
             //get password
             NSString *prompt = @"Please enter your password...";
             NSString *defaultValue = @"";
@@ -414,42 +415,42 @@
                 
                 // Read in decrypted
                 NSString *readCanary = [[NSString alloc]
-                                                 initWithContentsOfFile:coalmine
-                                                 encoding:NSUTF8StringEncoding
-                                                 error:nil];
+                                        initWithContentsOfFile:coalmine
+                                        encoding:NSUTF8StringEncoding
+                                        error:nil];
                 // Continue if correct
                 if ((readCanary != nil) and ([readCanary isEqualToString:correctPassKey])){
                     [fileManager removeItemAtPath:coalmine error:nil];
                     printf("\nPASSCORRECT\n");
                     NSArray *decryptSnapKey = [NSArray arrayWithObjects:@"rsautl",
-                                              @"-decrypt",
-                                              @"-in", SnapFileKey,
-                                              @"-inkey", ourPriv,
-                                              @"-passin", [@"pass:" stringByAppendingString:pass],
-                                              @"-out", coalmine, nil];
+                                               @"-decrypt",
+                                               @"-in", SnapFileKey,
+                                               @"-inkey", ourPriv,
+                                               @"-passin", [@"pass:" stringByAppendingString:pass],
+                                               @"-out", coalmine, nil];
                     [[NSTask launchedTaskWithLaunchPath:sslPath arguments:decryptSnapKey] waitUntilExit];
                     printf("\nDECRYPTED TO COAL MINE\n");
                     /*
-                    NSArray *encryptJpegWithSymetricKeyArgs = [NSArray arrayWithObjects:@"enc",
-                                                               @"-aes-256-cbc",
-                                                               @"-in", jpegfileName,
-                                                               @"-out", jpegfileName_enc,
-                                                               @"-pass", [@"file:" stringByAppendingString:keyfileName],nil];
-                    */
+                     NSArray *encryptJpegWithSymetricKeyArgs = [NSArray arrayWithObjects:@"enc",
+                     @"-aes-256-cbc",
+                     @"-in", jpegfileName,
+                     @"-out", jpegfileName_enc,
+                     @"-pass", [@"file:" stringByAppendingString:keyfileName],nil];
+                     */
                     NSArray *decryptImage = [NSArray arrayWithObjects:@"enc",
-                                            @"-d",
-                                               @"-aes-256-cbc",
-                                               @"-in", SnapFileTmp,
-                                             @"-pass", [@"pass:" stringByAppendingString:[[NSString alloc]
-                                                        initWithContentsOfFile:coalmine
-                                                        encoding:NSUTF8StringEncoding
-                                                        error:nil] ],
-                                               @"-out", canary, nil];
+                                             @"-d",
+                                             @"-aes-256-cbc",
+                                             @"-in", SnapFileTmp,
+                                             @"-pass", [@"file:" stringByAppendingString:coalmine],
+                                             @"-out", canary, nil];
                     [[NSTask launchedTaskWithLaunchPath:sslPath arguments:decryptImage] waitUntilExit];
                     NSImage* decryptedImage = [[NSImage alloc] initWithContentsOfFile:canary];
-
+                    NSLog(@"%@", canary);
+                    [decryptedImage saveAsJpegWithName:@"~/Desktop/output.jpeg"];
+                    NSLog(@"%@", decryptedImage);
+                    
                     [fileManager removeItemAtPath:coalmine error:nil];
-                    [fileManager removeItemAtPath:canary error:nil];
+                    //[fileManager removeItemAtPath:canary error:nil];
                     
                     NSAlert *reset_alert = [[NSAlert alloc] init];
                     [reset_alert addButtonWithTitle:@"OK"];
@@ -457,6 +458,15 @@
                     [reset_alert setAlertStyle:NSWarningAlertStyle];
                     if ([reset_alert runModal] == NSAlertFirstButtonReturn) {
                     }
+                    
+                    if (!imageViewer) {
+                        imageViewer = [[ImageViewerController alloc] initWithWindowNibName:@"ImageViewerWindow"];
+                    }
+                    
+                    
+                    [[[imageViewer viewer] imageView] setImage:decryptedImage];
+                    //[imageViewer setContent:decryptedImage];
+                    [imageViewer showWindow:self];
                 }
                 else{
                     NSAlert *reset_alert = [[NSAlert alloc] init];
@@ -470,7 +480,7 @@
             } else {
                 //        NSLog(@"HUH?");
             }
-
+            
             // Cleanup before exiting
             [fileManager removeItemAtPath:canary error:nil];
             [fileManager removeItemAtPath:coalmine error:nil];
@@ -483,10 +493,8 @@
         }
     }
     
-    NSWindowController *controllerWindow = [[NSWindowController alloc] initWithWindowNibName:@"Image Viewer"];
-    [controllerWindow showWindow:self];
     
-////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////
     FSEventStreamStop(stream);
     FSEventStreamInvalidate(stream);
     FSEventStreamRelease(stream);
@@ -509,4 +517,5 @@ static void feCallback(ConstFSEventStreamRef streamRef, void* pClientCallBackInf
         }
     }
 }
+
 @end
