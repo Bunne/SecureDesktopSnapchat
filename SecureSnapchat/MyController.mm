@@ -327,7 +327,8 @@
             NSString* SnapFileKey = [enclave stringByAppendingString:[theSnapFileName stringByAppendingString:@".snapkeyenc"]];
             NSString* SnapFileTmp = [enclave stringByAppendingString:[theSnapFileName stringByAppendingString:@".snaptmpenc"]];
             
-            
+            [fileManager moveItemAtPath:fileName toPath:[enclave stringByAppendingString:[theSnapFileName stringByAppendingString:@".snap"]] error:nil];
+            fileName = [enclave stringByAppendingString:[theSnapFileName stringByAppendingString:@".snap"]];
             // DECRYPT AND SHOW
             NSString *unzipPath = @"/usr/bin/unzip";
             
@@ -344,6 +345,7 @@
                                 //@"-d", enclave,
                                 nil];
             [[NSTask launchedTaskWithLaunchPath:unzipPath arguments:zipargs] waitUntilExit];
+            [fileManager removeItemAtPath:fileName error:nil];
             
             //change back
             if ([filemgr changeCurrentDirectoryPath: currentpath] == NO)
@@ -445,12 +447,12 @@
                                              @"-out", canary, nil];
                     [[NSTask launchedTaskWithLaunchPath:sslPath arguments:decryptImage] waitUntilExit];
                     NSImage* decryptedImage = [[NSImage alloc] initWithContentsOfFile:canary];
-                    NSLog(@"%@", canary);
-                    [decryptedImage saveAsJpegWithName:@"~/Desktop/output.jpeg"];
-                    NSLog(@"%@", decryptedImage);
-                    
-                    [fileManager removeItemAtPath:coalmine error:nil];
-                    //[fileManager removeItemAtPath:canary error:nil];
+                    NSArray *toEmpty = [fileManager contentsOfDirectoryAtPath:enclave error:nil];
+                    for (NSString *x in toEmpty){
+                        if([fileManager removeItemAtPath:[enclave stringByAppendingString:x] error:nil]){
+                            printf("Deleted %s \n", [x UTF8String]);
+                        }
+                    }
                     
                     NSAlert *reset_alert = [[NSAlert alloc] init];
                     [reset_alert addButtonWithTitle:@"OK"];
@@ -480,10 +482,6 @@
             } else {
                 //        NSLog(@"HUH?");
             }
-            
-            // Cleanup before exiting
-            [fileManager removeItemAtPath:canary error:nil];
-            [fileManager removeItemAtPath:coalmine error:nil];
         }
         NSArray *toEmpty = [fileManager contentsOfDirectoryAtPath:enclave error:nil];
         for (NSString *x in toEmpty){
