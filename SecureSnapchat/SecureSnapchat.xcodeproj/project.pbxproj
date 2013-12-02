@@ -22,6 +22,7 @@
 		EAD430301849D9FB004D34AF /* SelectFiles.m in Sources */ = {isa = PBXBuildFile; fileRef = EAD4302F1849D9FB004D34AF /* SelectFiles.m */; };
 		EAD430331849E89C004D34AF /* AddPeople.m in Sources */ = {isa = PBXBuildFile; fileRef = EAD430321849E89C004D34AF /* AddPeople.m */; };
 		F552BE7C184C2EB00097DC29 /* NSImage+saveAsJpegWithName.m in Sources */ = {isa = PBXBuildFile; fileRef = F552BE7B184C2EB00097DC29 /* NSImage+saveAsJpegWithName.m */; };
+		F552BE7E184C74820097DC29 /* Images-2.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F552BE7D184C74820097DC29 /* Images-2.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -48,6 +49,7 @@
 		EAD430321849E89C004D34AF /* AddPeople.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddPeople.m; sourceTree = "<group>"; };
 		F552BE7A184C2EB00097DC29 /* NSImage+saveAsJpegWithName.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSImage+saveAsJpegWithName.h"; sourceTree = "<group>"; };
 		F552BE7B184C2EB00097DC29 /* NSImage+saveAsJpegWithName.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSImage+saveAsJpegWithName.m"; sourceTree = "<group>"; };
+		F552BE7D184C74820097DC29 /* Images-2.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = "Images-2.xcassets"; path = "SecureSnapchat/Images-2.xcassets"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -131,6 +133,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				F552BE7D184C74820097DC29 /* Images-2.xcassets */,
 				EACE65D7184A0A85002A80EC /* Images.xcassets */,
 				AFF1974E17A1F5F6009EF1BE /* snapchat.entitlements */,
 				AFC271DC179B066100468E57 /* MainMenu.xib */,
@@ -212,6 +215,7 @@
 			files = (
 				8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */,
 				EACE65D8184A0A85002A80EC /* Images.xcassets in Resources */,
+				F552BE7E184C74820097DC29 /* Images-2.xcassets in Resources */,
 				EA424E18184AB57400B99219 /* icon.png in Resources */,
 				AFC271DE179B066100468E57 /* MainMenu.xib in Resources */,
 				EA424E16184AB47500B99219 /* snapchat.entitlements in Resources */,
@@ -261,6 +265,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = $NATIVE_ARCH;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "-";
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
@@ -290,6 +295,7 @@
 					i386,
 					ppc,
 				);
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "-";
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
