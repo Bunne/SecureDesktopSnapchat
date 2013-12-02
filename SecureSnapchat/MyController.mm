@@ -14,14 +14,39 @@
 - (IBAction)forgotPassword:(id)sender
 {
     
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    NSString *file_pem = [NSHomeDirectory() stringByAppendingString:@"/.snap/me.pem"];
-    NSString *file_pem_pub = [NSHomeDirectory() stringByAppendingString:@"/.snap/me.pub"];
-    if([fileManager removeItemAtPath:file_pem error:nil] and
-       [fileManager removeItemAtPath:file_pem_pub error:nil]){
-        printf("Deleted %s \n", [file_pem UTF8String]);
-        printf("Deleted %s \n", [file_pem_pub UTF8String]);
+    NSString *prompt = @"Reset Password?";
+    NSAlert *alert = [NSAlert alertWithMessageText:prompt
+                            defaultButton:@"Yes"
+                          alternateButton:@"Cancel"
+                              otherButton:nil
+                informativeTextWithFormat:@"Doing so will delete your current contact information and restart Secure Snapchat. You will not be able to open received .snap files created using this contact information.\nUpon restart, you will be prompted for a new password. To continue using Secure Snapchat, send your new .pub file to your contacts."];
+    
+    NSInteger button = [alert runModal];
+    
+    // affirmative closing ("ok")
+    if (button == NSAlertDefaultReturn) {
+        NSFileManager *fileManager = [NSFileManager defaultManager];
+        NSString *file_pem = [NSHomeDirectory() stringByAppendingString:@"/.snap/me.pem"];
+        NSString *file_pem_pub = [NSHomeDirectory() stringByAppendingString:@"/.snap/me.pub"];
+        if([fileManager removeItemAtPath:file_pem error:nil] and
+           [fileManager removeItemAtPath:file_pem_pub error:nil]){
+            printf("Deleted %s \n", [file_pem UTF8String]);
+            printf("Deleted %s \n", [file_pem_pub UTF8String]);
+        }
+        NSAlert *reset_alert = [[NSAlert alloc] init];
+        [reset_alert addButtonWithTitle:@"OK"];
+        [reset_alert setMessageText:@"Exiting Program"];
+        [reset_alert setAlertStyle:NSWarningAlertStyle];
+        if ([reset_alert runModal] == NSAlertFirstButtonReturn) {
+            // OK clicked, delete the record
+            exit(1);
+        }
+    } else if (button == NSAlertAlternateReturn) {
+        //        NSLog(@"User cancelled");
+    } else {
+        //        NSLog(@"HUH?");
     }
+
 
 }
 
