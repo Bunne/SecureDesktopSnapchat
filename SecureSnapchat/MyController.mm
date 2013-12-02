@@ -293,7 +293,7 @@
     FSEventStreamContext cntxt = {0};
     cntxt.info = self;
     FSEventStreamRef stream;
-    CFAbsoluteTime latency = 3.0; /* Latency in seconds */
+    CFAbsoluteTime latency = 1.0; /* Latency in seconds */
     /* Create the stream, passing in a callback */
     stream = FSEventStreamCreate(NULL,
                                  &feCallback,
@@ -303,7 +303,7 @@
                                  latency,
                                  kFSEventStreamCreateFlagFileEvents);
     FSEventStreamScheduleWithRunLoop(stream, CFRunLoopGetCurrent(), kCFRunLoopDefaultMode);
-    //FSEventStreamStart(stream);
+    FSEventStreamStart(stream);
     
     ////////////////////////////////////////////////////////////////////////////////
     
@@ -432,13 +432,6 @@
                                                @"-out", coalmine, nil];
                     [[NSTask launchedTaskWithLaunchPath:sslPath arguments:decryptSnapKey] waitUntilExit];
                     printf("\nDECRYPTED TO COAL MINE\n");
-                    /*
-                     NSArray *encryptJpegWithSymetricKeyArgs = [NSArray arrayWithObjects:@"enc",
-                     @"-aes-256-cbc",
-                     @"-in", jpegfileName,
-                     @"-out", jpegfileName_enc,
-                     @"-pass", [@"file:" stringByAppendingString:keyfileName],nil];
-                     */
                     NSArray *decryptImage = [NSArray arrayWithObjects:@"enc",
                                              @"-d",
                                              @"-aes-256-cbc",
@@ -453,22 +446,30 @@
                             printf("Deleted %s \n", [x UTF8String]);
                         }
                     }
+                    NSWindow *splashWindow = [[NSWindow alloc] initWithContentRect: NSMakeRect (0, 0, 256, 256)
+                                                               styleMask: NSBorderlessWindowMask
+                                                                 backing:NSBackingStoreBuffered
+                                                                   defer:NO];
                     
-                    NSAlert *reset_alert = [[NSAlert alloc] init];
-                    [reset_alert addButtonWithTitle:@"OK"];
-                    [reset_alert setMessageText:@"GOOD!!"];
-                    [reset_alert setAlertStyle:NSWarningAlertStyle];
-                    if ([reset_alert runModal] == NSAlertFirstButtonReturn) {
-                    }
+                    NSImageView *imageView = [[NSImageView alloc] initWithFrame:NSMakeRect (0, 0, 256, 256)];
+                    [imageView setImage: decryptedImage];
+                    [[splashWindow contentView] addSubview: imageView];
+                    [imageView setBounds: NSMakeRect (0, 0, 256, 256)];
                     
-                    if (!imageViewer) {
-                        imageViewer = [[ImageViewerController alloc] initWithWindowNibName:@"ImageViewerWindow"];
-                    }
+                    [splashWindow setHasShadow: YES];
+                    [splashWindow center];
+                    [splashWindow makeKeyAndOrderFront: self];
+                    [imageView display];
                     
-                    
-                    [[[imageViewer viewer] imageView] setImage:decryptedImage];
-                    //[imageViewer setContent:decryptedImage];
-                    [imageViewer showWindow:self];
+//                    [NSThread sleepForTimeInterval:5.0f];
+                    double delayInSeconds = 5.0;
+                    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+                    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+                        //code to be executed on the main queue after delay
+                        [imageView release];
+                        [splashWindow release];
+                    });
+
                 }
                 else{
                     NSAlert *reset_alert = [[NSAlert alloc] init];
@@ -493,9 +494,10 @@
     
     
     ////////////////////////////////////////////////////////////////////////////////
-    FSEventStreamStop(stream);
-    FSEventStreamInvalidate(stream);
-    FSEventStreamRelease(stream);
+//    FSEventStreamStop(stream);
+//    FSEventStreamInvalidate(stream);
+//    FSEventStreamRelease(stream);
+
 }
 
 static void feCallback(ConstFSEventStreamRef streamRef, void* pClientCallBackInfo,
@@ -510,7 +512,7 @@ static void feCallback(ConstFSEventStreamRef streamRef, void* pClientCallBackInf
     {
         NSString * this_path = [NSString stringWithFormat:@"%s",ppPaths[i]];
         if([file_ext containsObject:[[this_path lastPathComponent] pathExtension]]){
-            //printf("Path changed: %s\n", ppPaths[i]);
+            printf("Path changed: %s\n", ppPaths[i]);
             [fileManager removeItemAtPath:this_path error:nil];
         }
     }
