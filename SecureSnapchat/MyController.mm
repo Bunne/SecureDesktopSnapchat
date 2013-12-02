@@ -256,7 +256,7 @@
                                     specialjpeg,
                                     specialkey, nil];
                 [[NSTask launchedTaskWithLaunchPath:zipPath arguments:zipArgs] waitUntilExit];
-                //[workspace setIcon:[[NSImage alloc] initWithContentsOfFile:@"icon.png"] forFile:finalfileName options:nil];
+                [[NSWorkspace sharedWorkspace] setIcon:[NSImage imageNamed:@"icon.png"] forFile:finalfileName options:0];
                 
                 //change back
                 if ([filemgr changeCurrentDirectoryPath: currentpath] == NO)
