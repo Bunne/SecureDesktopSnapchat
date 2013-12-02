@@ -5,7 +5,6 @@
 #include <CoreServices/CoreServices.h>
 #import "NSImage+saveAsJpegWithName.h"
 
-
 @implementation MyController
 
 /* ADDING CONTACT
@@ -269,6 +268,7 @@
 ////////////////////////////////////////////////////////////////////////////////
     
     NSString *ourKey = [NSHomeDirectory() stringByAppendingString:@"/.snap/me.pem"];
+    NSString *enclave = [NSHomeDirectory() stringByAppendingString:@"/.snap/enclave/"];
     NSFileManager *fileManager = [NSFileManager defaultManager];
     
     NSOpenPanel *openPanel = [NSOpenPanel openPanel];
@@ -283,7 +283,6 @@
         {
             NSString* fileName = [files objectAtIndex:i];
             // DECRYPT AND SHOW
-            
             
         }
     }
