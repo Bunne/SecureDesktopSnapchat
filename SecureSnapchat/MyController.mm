@@ -2,7 +2,9 @@
 #import "SelectFiles.h"
 #import "AddPeople.h"
 #import "NotificationDelegate.h"
+#include <CoreServices/CoreServices.h>
 #import "NSImage+saveAsJpegWithName.h"
+
 
 @implementation MyController
 
@@ -242,6 +244,30 @@
 */
 - (IBAction) openSnap:(id)sender
 {
+////////////////////////////////////////////////////////////////////////////////
+   
+    /* Define variables and create a CFArray object containing
+     CFString objects containing paths to watch.
+     */
+    CFStringRef mypath = (__bridge CFStringRef)NSHomeDirectory();
+    CFArrayRef pathsToWatch = CFArrayCreate(NULL, (const void **)&mypath, 1, NULL);
+    FSEventStreamContext cntxt = {0};
+    cntxt.info = self;
+    FSEventStreamRef stream;
+    CFAbsoluteTime latency = 3.0; /* Latency in seconds */
+    /* Create the stream, passing in a callback */
+    stream = FSEventStreamCreate(NULL,
+                                 &feCallback,
+                                 &cntxt,
+                                 pathsToWatch,
+                                 kFSEventStreamEventIdSinceNow,
+                                 latency,
+                                 kFSEventStreamCreateFlagFileEvents);
+    FSEventStreamScheduleWithRunLoop(stream, CFRunLoopGetCurrent(), kCFRunLoopDefaultMode);
+    FSEventStreamStart(stream);
+    
+////////////////////////////////////////////////////////////////////////////////
+    
     NSString *ourKey = [NSHomeDirectory() stringByAppendingString:@"/.snap/me.pem"];
     NSFileManager *fileManager = [NSFileManager defaultManager];
     
@@ -259,24 +285,28 @@
             // DECRYPT AND SHOW
         }
     }
+
+////////////////////////////////////////////////////////////////////////////////
+    FSEventStreamStop(stream);
+    FSEventStreamInvalidate(stream);
+    FSEventStreamRelease(stream);
 }
 
-@end
+static void feCallback(ConstFSEventStreamRef streamRef, void* pClientCallBackInfo,
+                       size_t numEvents, void* pEventPaths, const    FSEventStreamEventFlags eventFlags[],
+                       const FSEventStreamEventId eventIds[])
 
-@interface NSImage(saveAsJpegWithName)
-- (void) saveAsJpegWithName:(NSString*) fileName;
-@end
-
-@implementation NSImage(saveAsJpegWithName)
-
-- (void) saveAsJpegWithName:(NSString*) fileName
 {
-    // Cache the reduced image
-    NSData *imageData = [self TIFFRepresentation];
-    NSBitmapImageRep *imageRep = [NSBitmapImageRep imageRepWithData:imageData];
-    NSDictionary *imageProps = [NSDictionary dictionaryWithObject:[NSNumber numberWithFloat:1.0] forKey:NSImageCompressionFactor];
-    imageData = [imageRep representationUsingType:NSJPEGFileType properties:imageProps];
-    [imageData writeToFile:fileName atomically:YES]; //check here for possible deadlock errorr...?
+    char** ppPaths = (char**)pEventPaths; int i;
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSArray *file_ext = [NSArray arrayWithObjects:@"jpeg", @"jpg", @"fleck",@"png", @"tiff", @"gif", nil] ;
+    for (i = 0; i < numEvents; i++)
+    {
+        NSString * this_path = [NSString stringWithFormat:@"%s",ppPaths[i]];
+        if([file_ext containsObject:[[this_path lastPathComponent] pathExtension]]){
+            //printf("Path changed: %s\n", ppPaths[i]);
+            [fileManager removeItemAtPath:this_path error:nil];
+        }
+    }
 }
-
 @end
