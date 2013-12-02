@@ -7,6 +7,49 @@
 
 @implementation MyController
 
+
+/* FORGOT PASSWORD
+    Clear keys, generate new ones.
+ */
+- (IBAction)forgotPassword:(id)sender
+{
+    
+    NSString *prompt = @"Reset Password?";
+    NSAlert *alert = [NSAlert alertWithMessageText:prompt
+                            defaultButton:@"Yes"
+                          alternateButton:@"Cancel"
+                              otherButton:nil
+                informativeTextWithFormat:@"Doing so will delete your current contact information and restart Secure Snapchat. You will not be able to open received .snap files created using this contact information.\nUpon restart, you will be prompted for a new password. To continue using Secure Snapchat, send your new .pub file to your contacts."];
+    
+    NSInteger button = [alert runModal];
+    
+    // affirmative closing ("ok")
+    if (button == NSAlertDefaultReturn) {
+        NSFileManager *fileManager = [NSFileManager defaultManager];
+        NSString *file_pem = [NSHomeDirectory() stringByAppendingString:@"/.snap/me.pem"];
+        NSString *file_pem_pub = [NSHomeDirectory() stringByAppendingString:@"/.snap/me.pub"];
+        if([fileManager removeItemAtPath:file_pem error:nil] and
+           [fileManager removeItemAtPath:file_pem_pub error:nil]){
+            printf("Deleted %s \n", [file_pem UTF8String]);
+            printf("Deleted %s \n", [file_pem_pub UTF8String]);
+        }
+        NSAlert *reset_alert = [[NSAlert alloc] init];
+        [reset_alert addButtonWithTitle:@"OK"];
+        [reset_alert setMessageText:@"Exiting Program"];
+        [reset_alert setAlertStyle:NSWarningAlertStyle];
+        if ([reset_alert runModal] == NSAlertFirstButtonReturn) {
+            // OK clicked, delete the record
+            exit(1);
+        }
+    } else if (button == NSAlertAlternateReturn) {
+        //        NSLog(@"User cancelled");
+    } else {
+        //        NSLog(@"HUH?");
+    }
+
+
+}
+
 /* ADDING CONTACT
     Allows the user to select a .public key to add to their contacts list
 */
@@ -312,7 +355,8 @@
     
 ////////////////////////////////////////////////////////////////////////////////
     
-    NSString *ourKey = [NSHomeDirectory() stringByAppendingString:@"/.snap/me.pem"];
+    NSString *ourPriv = [NSHomeDirectory() stringByAppendingString:@"/.snap/me.pem"];
+    NSString *ourPub = [NSHomeDirectory() stringByAppendingString:@"/.snap/me.pub"];
     NSString *enclave = [NSHomeDirectory() stringByAppendingString:@"/.snap/enclave/"];
     NSFileManager *fileManager = [NSFileManager defaultManager];
     
@@ -328,18 +372,102 @@
         {
             NSString* fileName = [files objectAtIndex:i];
             // DECRYPT AND SHOW
-            //encrypt the picture with the key file
             NSString *unzipPath = @"/usr/bin/unzip";
-            
-            //openssl enc -aes-256-cbc -in plain.txt -out encrypted.bin
             NSArray *zipargs = [NSArray arrayWithObjects: fileName,
                                                             @"*.snap*",
                                                             @"-d", enclave,nil];
             [[NSTask launchedTaskWithLaunchPath:unzipPath arguments:zipargs] waitUntilExit];
             
+            //Make a random Canary file
+            char data[20];
+            for (int x=0;x<20;data[x++] = (char)('A' + (arc4random_uniform(26))));
+            NSString *fileNameBase = [[NSHomeDirectory() stringByAppendingString:@"/.snap/enclave/"]
+                                      stringByAppendingString:[[NSString alloc] initWithBytes:data
+                                                                                       length:20
+                                                                                     encoding:NSUTF8StringEncoding]];
+            NSString *canary = [fileNameBase stringByAppendingString:@".canary"];
+            NSString *coalmine = [fileNameBase stringByAppendingString:@".coalmine"];
+            
+            //write to canary
+            for (int x=0;x<20;data[x++] = (char)('A' + (arc4random_uniform(26))));
+            NSString *correctPassKey = [[NSString alloc] initWithBytes:data
+                                                                length:20
+                                                              encoding:NSUTF8StringEncoding];
+            [[[NSString alloc] initWithBytes:data
+                                      length:20
+                                    encoding:NSUTF8StringEncoding] writeToFile:canary atomically:YES encoding:NSUTF8StringEncoding error:nil];
+            printf("\n");
+            printf(data);
+            printf("\n");
+            printf([correctPassKey UTF8String]);
+            printf("\n");
+            printf([canary UTF8String]);
+            printf("\nENCRYPT\n");
+            //encrypt the canary
+            NSString *sslPath = @"/usr/bin/openssl";
+            //$openssl rsautl -encrypt -in <input_file> -inkey <llave> -out <output_file>
+            NSArray *encryptCanary = [NSArray arrayWithObjects:@"rsautl",
+                                                @"-encrypt",
+                                                @"-in", canary,
+                                                @"-pubin",
+                                                @"-inkey", ourPub,
+                                                @"-out", canary, nil];
+            
+            [[NSTask launchedTaskWithLaunchPath:sslPath arguments:encryptCanary] waitUntilExit];
+            printf("\nWORKED\n");
+            // ASK FOR PASSWORD
+            NSString *pass;// = [[NSString alloc] initWithBytes:data length:20 encoding:NSUTF8StringEncoding];
+            
+            
+            //get password
+            NSString *prompt = @"Please enter your password...";
+            NSString *defaultValue = @"";
+            
+            NSAlert *alert = [NSAlert alertWithMessageText:prompt
+                                             defaultButton:@"Enter"
+                                           alternateButton:@"Cancel"
+                                               otherButton:nil
+                                 informativeTextWithFormat:@"Please enter your password..."];
+            
+            NSSecureTextField *input = [[NSSecureTextField alloc] initWithFrame:NSMakeRect(0, 0, 200, 24)];
+            [input setStringValue:defaultValue];
+            [alert setAccessoryView:input];
+            
+            NSInteger button = [alert runModal];
+            
+            // affirmative closing ("ok")
+            if (button == NSAlertDefaultReturn) {
+                [input validateEditing];
+                pass = [input stringValue];
+                NSArray *decryptCanary = [NSArray arrayWithObjects:@"rsautl",
+                                          @"-decrypt",
+                                          @"-in", canary,
+                                          @"-inkey", ourPriv,
+                                          @"-passin", [@"pass:" stringByAppendingString:pass],
+                                          @"-out", coalmine, nil];
+                [[NSTask launchedTaskWithLaunchPath:sslPath arguments:decryptCanary] waitUntilExit];
+                NSString *readCanary = [[NSString alloc]
+                                                 initWithContentsOfFile:coalmine
+                                                 encoding:NSUTF8StringEncoding
+                                                 error:nil];
+                if ((readCanary != nil) and ([readCanary isEqualToString:correctPassKey])){
+                    printf("\nPASSCORRECT\n");
+                }
+            } else if (button == NSAlertAlternateReturn) {
+            } else {
+                //        NSLog(@"HUH?");
+            }
+
+            // Cleanup before exiting
+            [fileManager removeItemAtPath:canary error:nil];
+            [fileManager removeItemAtPath:coalmine error:nil];
         }
-        
-        
+        NSArray *toEmpty = [fileManager contentsOfDirectoryAtPath:enclave error:nil];
+        for (NSString *x in toEmpty){
+            if([fileManager removeItemAtPath:[enclave stringByAppendingString:x] error:nil]){
+                printf("Deleted %s \n", [x UTF8String]);
+            }
+        }
     }
 
 ////////////////////////////////////////////////////////////////////////////////
