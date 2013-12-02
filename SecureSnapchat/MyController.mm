@@ -283,8 +283,18 @@
         {
             NSString* fileName = [files objectAtIndex:i];
             // DECRYPT AND SHOW
+            //encrypt the picture with the key file
+            NSString *unzipPath = @"/usr/bin/unzip";
+            
+            //openssl enc -aes-256-cbc -in plain.txt -out encrypted.bin
+            NSArray *zipargs = [NSArray arrayWithObjects: fileName,
+                                                            @"*.snap*",
+                                                            @"-d", enclave,nil];
+            [[NSTask launchedTaskWithLaunchPath:unzipPath arguments:zipargs] waitUntilExit];
             
         }
+        
+        
     }
 
 ////////////////////////////////////////////////////////////////////////////////
