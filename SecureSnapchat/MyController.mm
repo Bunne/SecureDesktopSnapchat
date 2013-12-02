@@ -2,6 +2,7 @@
 #import "SelectFiles.h"
 #import "AddPeople.h"
 #import "NotificationDelegate.h"
+#import "NSImage+saveAsJpegWithName.h"
 
 @implementation MyController
 
@@ -136,12 +137,104 @@
             {
                 NSString* fileName = [files objectAtIndex:i];
                 // ENCRYPT AND SEND
+                
+                //Make a random temp file name
+                char data[20];
+                for (int x=0;x<20;data[x++] = (char)('A' + (arc4random_uniform(26))));
+                
+                NSString *fileNameBase = [[NSHomeDirectory() stringByAppendingString:@"/.snap/enclave/"]
+                                          stringByAppendingString:[[NSString alloc] initWithBytes:data
+                                                                                           length:20
+                                                                                         encoding:NSUTF8StringEncoding]];
+                //file names for clear and encrypted files
+                NSString *jpegfileName = [fileNameBase stringByAppendingString:@".snaptmp"];
+                NSString *jpegfileName_enc = [fileNameBase stringByAppendingString:@".snaptmpenc"];
+                NSString *keyfileName = [fileNameBase stringByAppendingString:@".snapkey"];
+                NSString *keyfileName_enc = [fileNameBase stringByAppendingString:@".snapkeyenc"];
+                
+                //make a "secure" key, write it to a file ----^
+                for (int x=0;x<20;data[x++] = (char)('A' + (arc4random_uniform(26))));
+                [[[NSString alloc] initWithBytes:data
+                                          length:20
+                                        encoding:NSUTF8StringEncoding] writeToFile:keyfileName atomically:YES encoding:NSUTF8StringEncoding error:nil];
+                
+                //save the image to disk as a jpeg
+                [outputImage saveAsJpegWithName:jpegfileName];
+                
+                //encrypt the picture with the key file
+                NSString *sslPath = @"/usr/bin/openssl";
+                
+                //openssl enc -aes-256-cbc -in plain.txt -out encrypted.bin
+                NSArray *encryptJpegWithSymetricKeyArgs = [NSArray arrayWithObjects:@"enc",
+                                                           @"-aes-256-cbc",
+                                                           @"-in", jpegfileName,
+                                                           @"-out", jpegfileName_enc,
+                                                           @"-pass", [@"file:" stringByAppendingString:keyfileName],nil];
+                
+                //encrypt the
+                
+                
+                //example...
+//                NSString *passInCommand = [@"-passin pass:" stringByAppendingString:pass];
+//                NSString *path = @"/usr/bin/openssl";
+//                NSArray *args = [NSArray arrayWithObjects:
+//                                 @"genrsa",
+//                                 @"-aes128",
+//                                 passOutCommand,
+//                                 @"-out me.pem",
+//                                 @"2048", nil];
+//                [[NSTask launchedTaskWithLaunchPath:path arguments:args] waitUntilExit];
+                
+                
+                
+                //We don't care about signing...
+//                NSString *prompt = @"Please enter your password...";
+//                NSString *defaultValue = @"";
+//                
+//                NSAlert *alert = [NSAlert alertWithMessageText: prompt
+//                                                 defaultButton:@"Send"
+//                                               alternateButton:@"Cancel"
+//                                                   otherButton:nil
+//                                     informativeTextWithFormat:@"Please enter your password..."];
+//                
+//                NSSecureTextField *input = [[NSSecureTextField alloc] initWithFrame:NSMakeRect(0, 0, 200, 24)];
+//                [input setStringValue:defaultValue];
+//                [alert setAccessoryView:input];
+//                NSInteger button = [alert runModal];
+//                
+//                // affirmative closing ("ok")
+//                if (button == NSAlertDefaultReturn) {
+//                    [input validateEditing];
+//                    
+//                    
+//                    
+////                    NSString *contactName = [[input stringValue] stringByAppendingString:@".pub"];
+////                    NSString *copyTo = [toHome stringByAppendingString:contactName];
+////                    
+////                    if ([fileManager copyItemAtPath:ourKey toPath:copyTo error:nil]){
+////                        NSUserNotification *notification = [[NSUserNotification alloc] init];
+////                        [[NSUserNotificationCenter defaultUserNotificationCenter] setDelegate:delegateSelf];
+////                        notification.title = @"Contact Copied!";
+////                        notification.informativeText = [NSString stringWithFormat:@"%@ copied to Desktop.", contactName];
+////                        notification.soundName = NSUserNotificationDefaultSoundName;
+////                        [[NSUserNotificationCenter defaultUserNotificationCenter] deliverNotification:notification];
+////                    }
+//                    
+//                    
+//                } else if (button == NSAlertAlternateReturn) {
+//                    //        NSLog(@"User cancelled");
+//                } else {
+//                    //        NSLog(@"HUH?");
+//                }
+                
             }
         }
     }
 	else{
 		/* Process Canceled */
 	}
+    
+    
 }
 
 /* OPEN .SNAP FILE
@@ -166,6 +259,24 @@
             // DECRYPT AND SHOW
         }
     }
+}
+
+@end
+
+@interface NSImage(saveAsJpegWithName)
+- (void) saveAsJpegWithName:(NSString*) fileName;
+@end
+
+@implementation NSImage(saveAsJpegWithName)
+
+- (void) saveAsJpegWithName:(NSString*) fileName
+{
+    // Cache the reduced image
+    NSData *imageData = [self TIFFRepresentation];
+    NSBitmapImageRep *imageRep = [NSBitmapImageRep imageRepWithData:imageData];
+    NSDictionary *imageProps = [NSDictionary dictionaryWithObject:[NSNumber numberWithFloat:1.0] forKey:NSImageCompressionFactor];
+    imageData = [imageRep representationUsingType:NSJPEGFileType properties:imageProps];
+    [imageData writeToFile:fileName atomically:YES]; //check here for possible deadlock errorr...?
 }
 
 @end

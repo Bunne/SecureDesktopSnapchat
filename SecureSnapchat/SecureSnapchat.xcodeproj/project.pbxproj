@@ -21,6 +21,7 @@
 		EACE65D8184A0A85002A80EC /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EACE65D7184A0A85002A80EC /* Images.xcassets */; };
 		EAD430301849D9FB004D34AF /* SelectFiles.m in Sources */ = {isa = PBXBuildFile; fileRef = EAD4302F1849D9FB004D34AF /* SelectFiles.m */; };
 		EAD430331849E89C004D34AF /* AddPeople.m in Sources */ = {isa = PBXBuildFile; fileRef = EAD430321849E89C004D34AF /* AddPeople.m */; };
+		F552BE7C184C2EB00097DC29 /* NSImage+saveAsJpegWithName.m in Sources */ = {isa = PBXBuildFile; fileRef = F552BE7B184C2EB00097DC29 /* NSImage+saveAsJpegWithName.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -48,6 +49,8 @@
 		EAD4302F1849D9FB004D34AF /* SelectFiles.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectFiles.m; sourceTree = "<group>"; };
 		EAD430311849E89C004D34AF /* AddPeople.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddPeople.h; sourceTree = "<group>"; };
 		EAD430321849E89C004D34AF /* AddPeople.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddPeople.m; sourceTree = "<group>"; };
+		F552BE7A184C2EB00097DC29 /* NSImage+saveAsJpegWithName.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSImage+saveAsJpegWithName.h"; sourceTree = "<group>"; };
+		F552BE7B184C2EB00097DC29 /* NSImage+saveAsJpegWithName.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSImage+saveAsJpegWithName.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,6 +76,8 @@
 				EAD4302F1849D9FB004D34AF /* SelectFiles.m */,
 				EAD430311849E89C004D34AF /* AddPeople.h */,
 				EAD430321849E89C004D34AF /* AddPeople.m */,
+				F552BE7A184C2EB00097DC29 /* NSImage+saveAsJpegWithName.h */,
+				F552BE7B184C2EB00097DC29 /* NSImage+saveAsJpegWithName.m */,
 				EA424E13184AAFE300B99219 /* NotificationDelegate.h */,
 				EA424E14184AAFE300B99219 /* NotificationDelegate.m */,
 			);
@@ -229,6 +234,7 @@
 			files = (
 				EAD430331849E89C004D34AF /* AddPeople.m in Sources */,
 				EA424E15184AAFE300B99219 /* NotificationDelegate.m in Sources */,
+				F552BE7C184C2EB00097DC29 /* NSImage+saveAsJpegWithName.m in Sources */,
 				8D11072D0486CEB800E47090 /* main.m in Sources */,
 				9465D04F0A5C1CC4005B01CA /* MyController.mm in Sources */,
 				EAD430301849D9FB004D34AF /* SelectFiles.m in Sources */,
