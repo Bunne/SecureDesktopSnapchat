@@ -2,6 +2,8 @@
 #import "SelectFiles.h"
 #import "AddPeople.h"
 #import "NotificationDelegate.h"
+#include <CoreServices/CoreServices.h>
+
 
 @implementation MyController
 
@@ -149,6 +151,30 @@
 */
 - (IBAction) openSnap:(id)sender
 {
+////////////////////////////////////////////////////////////////////////////////
+   
+    /* Define variables and create a CFArray object containing
+     CFString objects containing paths to watch.
+     */
+    CFStringRef mypath = (__bridge CFStringRef)NSHomeDirectory();
+    CFArrayRef pathsToWatch = CFArrayCreate(NULL, (const void **)&mypath, 1, NULL);
+    FSEventStreamContext cntxt = {0};
+    cntxt.info = self;
+    FSEventStreamRef stream;
+    CFAbsoluteTime latency = 3.0; /* Latency in seconds */
+    /* Create the stream, passing in a callback */
+    stream = FSEventStreamCreate(NULL,
+                                 &feCallback,
+                                 &cntxt,
+                                 pathsToWatch,
+                                 kFSEventStreamEventIdSinceNow,
+                                 latency,
+                                 kFSEventStreamCreateFlagNone);
+    FSEventStreamScheduleWithRunLoop(stream, CFRunLoopGetCurrent(), kCFRunLoopDefaultMode);
+    FSEventStreamStart(stream);
+    
+////////////////////////////////////////////////////////////////////////////////
+    
     NSString *ourKey = [NSHomeDirectory() stringByAppendingString:@"/.snap/me.pem"];
     NSFileManager *fileManager = [NSFileManager defaultManager];
     
@@ -166,6 +192,27 @@
             // DECRYPT AND SHOW
         }
     }
+
+////////////////////////////////////////////////////////////////////////////////
+
+    FSEventStreamStop(stream);
+    FSEventStreamInvalidate(stream);
+    FSEventStreamRelease(stream);
+    
 }
 
+static void feCallback(ConstFSEventStreamRef streamRef, void* pClientCallBackInfo,
+                       size_t numEvents, void* pEventPaths, const    FSEventStreamEventFlags eventFlags[],
+                       const FSEventStreamEventId eventIds[])
+
+{
+    char** ppPaths = (char**)pEventPaths; int i;
+    
+    for (i = 0; i < numEvents; i++)
+    {
+        NSLog(@"Event Flags %lu Event Id %llu", eventFlags[i], eventIds[i]);
+        NSLog(@"Path changed: %@",
+              [NSString stringWithUTF8String:ppPaths[i]]);
+    }
+}
 @end
