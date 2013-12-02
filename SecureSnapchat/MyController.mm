@@ -170,6 +170,7 @@
                 NSString *jpegfileName_enc = [fileNameBase stringByAppendingString:@".snaptmpenc"];
                 NSString *keyfileName = [fileNameBase stringByAppendingString:@".snapkey"];
                 NSString *keyfileName_enc = [fileNameBase stringByAppendingString:@".snapkeyenc"];
+                NSString *finalfileName = [fileNameBase stringByAppendingString:@".snap"];
                 
                 //make a "secure" key, write it to a file ----^
                 for (int x=0;x<20;data[x++] = (char)('A' + (arc4random_uniform(26))));
@@ -183,14 +184,26 @@
                 //encrypt the picture with the key file
                 NSString *sslPath = @"/usr/bin/openssl";
                 
-                //openssl enc -aes-256-cbc -in plain.txt -out encrypted.bin
+                //$openssl enc -aes-256-cbc -in plain.txt -out encrypted.bin
                 NSArray *encryptJpegWithSymetricKeyArgs = [NSArray arrayWithObjects:@"enc",
                                                            @"-aes-256-cbc",
                                                            @"-in", jpegfileName,
                                                            @"-out", jpegfileName_enc,
                                                            @"-pass", [@"file:" stringByAppendingString:keyfileName],nil];
                 
-                //encrypt the
+                [[NSTask launchedTaskWithLaunchPath:sslPath arguments:encryptJpegWithSymetricKeyArgs] waitUntilExit];
+                
+                //encrypt the symmetric key with the public key of the recipient
+                //$openssl rsautl -encrypt -in <input_file> -inkey <llave> -out <output_file>
+                NSArray *encryptSymetricKeyArgs = [NSArray arrayWithObjects:@"rsautl",
+                                                   @"-encrypt",
+                                                   @"-in", jpegfileName_enc,
+                                                   @"-inkey", fileName,
+                                                   @"-out", keyfileName_enc, nil];
+                
+                [[NSTask launchedTaskWithLaunchPath:sslPath arguments:encryptSymetricKeyArgs] waitUntilExit];
+                
+                //zip the encrypted symmetric key and the encrypted image into a .snap file
                 
                 
                 //example...
