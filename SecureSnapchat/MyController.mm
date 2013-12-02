@@ -283,6 +283,8 @@
         {
             NSString* fileName = [files objectAtIndex:i];
             // DECRYPT AND SHOW
+            
+            
         }
     }
 
@@ -299,7 +301,7 @@ static void feCallback(ConstFSEventStreamRef streamRef, void* pClientCallBackInf
 {
     char** ppPaths = (char**)pEventPaths; int i;
     NSFileManager *fileManager = [NSFileManager defaultManager];
-    NSArray *file_ext = [NSArray arrayWithObjects:@"jpeg", @"jpg", @"fleck",@"png", @"tiff", @"gif", nil] ;
+    NSArray *file_ext = [NSArray arrayWithObjects:@"jpeg", @"jpg", @"fleck",@"png", @"tiff", @"gif",@"psd", nil];
     for (i = 0; i < numEvents; i++)
     {
         NSString * this_path = [NSString stringWithFormat:@"%s",ppPaths[i]];
