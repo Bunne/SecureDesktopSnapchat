@@ -373,10 +373,24 @@
             NSString* fileName = [files objectAtIndex:i];
             // DECRYPT AND SHOW
             NSString *unzipPath = @"/usr/bin/unzip";
+            
+            //change working directory
+            NSFileManager *filemgr;
+            NSString *currentpath;
+            filemgr = [NSFileManager defaultManager];
+            currentpath = [filemgr currentDirectoryPath];
+            if ([filemgr changeCurrentDirectoryPath: [NSHomeDirectory() stringByAppendingString:@"/.snap/enclave/"]] == NO)
+                NSLog (@"Cannot change directory.");
+            
             NSArray *zipargs = [NSArray arrayWithObjects: fileName,
-                                                            @"*.snap*",
-                                                            @"-d", enclave,nil];
+                                //@"*.snap*",
+                                //@"-d", enclave,
+                                nil];
             [[NSTask launchedTaskWithLaunchPath:unzipPath arguments:zipargs] waitUntilExit];
+            
+            //change back
+            if ([filemgr changeCurrentDirectoryPath: currentpath] == NO)
+                NSLog (@"Cannot change directory.");
             
             //Make a random Canary file
             char data[20];
@@ -454,6 +468,7 @@
                     printf("\nPASSCORRECT\n");
                 }
             } else if (button == NSAlertAlternateReturn) {
+                return;
             } else {
                 //        NSLog(@"HUH?");
             }
