@@ -354,6 +354,7 @@
                                                                                        length:20
                                                                                      encoding:NSUTF8StringEncoding]];
             NSString *canary = [fileNameBase stringByAppendingString:@".canary"];
+            NSString *canarya = [fileNameBase stringByAppendingString:@".canarya"];
             NSString *coalmine = [fileNameBase stringByAppendingString:@".coalmine"];
             
             //write to canary
@@ -361,9 +362,14 @@
             NSString *correctPassKey = [[NSString alloc] initWithBytes:data
                                                                 length:20
                                                               encoding:NSUTF8StringEncoding];
-            [[[NSString alloc] initWithBytes:data
-                                      length:20
-                                    encoding:NSUTF8StringEncoding] writeToFile:canary atomically:YES encoding:NSUTF8StringEncoding error:nil];
+            [correctPassKey writeToFile:canary atomically:YES encoding:NSUTF8StringEncoding error:nil];
+            FILE *fi = fopen([canary UTF8String], "w");
+            if (fi!=NULL)
+            {
+                fputs ([correctPassKey UTF8String],fi);
+                fclose (fi);
+            }
+            
             printf("\n");
             printf(data);
             printf("\n");
@@ -379,9 +385,10 @@
                                                 @"-in", canary,
                                                 @"-pubin",
                                                 @"-inkey", ourPub,
-                                                @"-out", canary, nil];
+                                                @"-out", canarya, nil];
             
             [[NSTask launchedTaskWithLaunchPath:sslPath arguments:encryptCanary] waitUntilExit];
+            [fileManager removeItemAtPath:canary error:nil];
             printf("\nWORKED\n");
             // ASK FOR PASSWORD
             NSString *pass;// = [[NSString alloc] initWithBytes:data length:20 encoding:NSUTF8StringEncoding];
@@ -407,18 +414,25 @@
             if (button == NSAlertDefaultReturn) {
                 [input validateEditing];
                 pass = [input stringValue];
+                // Attempt to decrypt with the pass
                 NSArray *decryptCanary = [NSArray arrayWithObjects:@"rsautl",
                                           @"-decrypt",
-                                          @"-in", canary,
+                                          @"-in", canarya,
                                           @"-inkey", ourPriv,
                                           @"-passin", [@"pass:" stringByAppendingString:pass],
                                           @"-out", coalmine, nil];
                 [[NSTask launchedTaskWithLaunchPath:sslPath arguments:decryptCanary] waitUntilExit];
+                // Clean
+                [fileManager removeItemAtPath:canarya error:nil];
+                
+                // Read in decrypted
                 NSString *readCanary = [[NSString alloc]
                                                  initWithContentsOfFile:coalmine
                                                  encoding:NSUTF8StringEncoding
                                                  error:nil];
+                // Continue if correct
                 if ((readCanary != nil) and ([readCanary isEqualToString:correctPassKey])){
+                    [fileManager removeItemAtPath:coalmine error:nil];
                     printf("\nPASSCORRECT\n");
                 }
             } else if (button == NSAlertAlternateReturn) {
