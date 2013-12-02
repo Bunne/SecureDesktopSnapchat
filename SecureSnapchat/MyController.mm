@@ -225,7 +225,7 @@
                 
                 //encrypt the symmetric key with the public key of the recipient
                 //$openssl rsautl -encrypt -in <input_file> -inkey <llave> -out <output_file>
-                NSArray *encryptSymetricKeyArgs = [NSArray arrayWithObjects:@"rsautl",
+                NSArray *encryptSymetricKeyArgs = [NSArray arrayWithObjects:@"aes-256-cbc",
                                                    @"-encrypt",
                                                    @"-in", keyfileName,
                                                    @"-pubin",
@@ -267,59 +267,6 @@
                 NSArray *rmArgs = [NSArray arrayWithObjects:jpegfileName, jpegfileName_enc, keyfileName, keyfileName_enc, nil];
                 [[NSTask launchedTaskWithLaunchPath:rmPath arguments:rmArgs] waitUntilExit];
                 [filemgr moveItemAtPath:finalfileName toPath:toHome error:nil];
-                //example...
-//                NSString *passInCommand = [@"-passin pass:" stringByAppendingString:pass];
-//                NSString *path = @"/usr/bin/openssl";
-//                NSArray *args = [NSArray arrayWithObjects:
-//                                 @"genrsa",
-//                                 @"-aes128",
-//                                 passOutCommand,
-//                                 @"-out me.pem",
-//                                 @"2048", nil];
-//                [[NSTask launchedTaskWithLaunchPath:path arguments:args] waitUntilExit];
-                
-                
-                
-                //We don't care about signing...
-//                NSString *prompt = @"Please enter your password...";
-//                NSString *defaultValue = @"";
-//                
-//                NSAlert *alert = [NSAlert alertWithMessageText: prompt
-//                                                 defaultButton:@"Send"
-//                                               alternateButton:@"Cancel"
-//                                                   otherButton:nil
-//                                     informativeTextWithFormat:@"Please enter your password..."];
-//                
-//                NSSecureTextField *input = [[NSSecureTextField alloc] initWithFrame:NSMakeRect(0, 0, 200, 24)];
-//                [input setStringValue:defaultValue];
-//                [alert setAccessoryView:input];
-//                NSInteger button = [alert runModal];
-//                
-//                // affirmative closing ("ok")
-//                if (button == NSAlertDefaultReturn) {
-//                    [input validateEditing];
-//                    
-//                    
-//                    
-////                    NSString *contactName = [[input stringValue] stringByAppendingString:@".pub"];
-////                    NSString *copyTo = [toHome stringByAppendingString:contactName];
-////                    
-////                    if ([fileManager copyItemAtPath:ourKey toPath:copyTo error:nil]){
-////                        NSUserNotification *notification = [[NSUserNotification alloc] init];
-////                        [[NSUserNotificationCenter defaultUserNotificationCenter] setDelegate:delegateSelf];
-////                        notification.title = @"Contact Copied!";
-////                        notification.informativeText = [NSString stringWithFormat:@"%@ copied to Desktop.", contactName];
-////                        notification.soundName = NSUserNotificationDefaultSoundName;
-////                        [[NSUserNotificationCenter defaultUserNotificationCenter] deliverNotification:notification];
-////                    }
-//                    
-//                    
-//                } else if (button == NSAlertAlternateReturn) {
-//                    //        NSLog(@"User cancelled");
-//                } else {
-//                    //        NSLog(@"HUH?");
-//                }
-                
             }
         }
     }
@@ -375,6 +322,11 @@
         for( int i = 0; i < [files count]; i++ )
         {
             NSString* fileName = [files objectAtIndex:i];
+            NSString* theSnapFileName = [[fileName lastPathComponent] stringByDeletingPathExtension];
+            NSString* SnapFileKey = [enclave stringByAppendingString:[theSnapFileName stringByAppendingString:@".snapkeyenc"]];
+            NSString* SnapFileTmp = [enclave stringByAppendingString:[theSnapFileName stringByAppendingString:@".snaptmpenc"]];
+            
+            
             // DECRYPT AND SHOW
             NSString *unzipPath = @"/usr/bin/unzip";
             
@@ -413,20 +365,7 @@
                                                                 length:20
                                                               encoding:NSUTF8StringEncoding];
             [correctPassKey writeToFile:canary atomically:YES encoding:NSUTF8StringEncoding error:nil];
-            FILE *fi = fopen([canary UTF8String], "w");
-            if (fi!=NULL)
-            {
-                fputs ([correctPassKey UTF8String],fi);
-                fclose (fi);
-            }
             
-            printf("\n");
-            printf(data);
-            printf("\n");
-            printf([correctPassKey UTF8String]);
-            printf("\n");
-            printf([canary UTF8String]);
-            printf("\nENCRYPT\n");
             //encrypt the canary
             NSString *sslPath = @"/usr/bin/openssl";
             //$openssl rsautl -encrypt -in <input_file> -inkey <llave> -out <output_file>
@@ -439,11 +378,10 @@
             
             [[NSTask launchedTaskWithLaunchPath:sslPath arguments:encryptCanary] waitUntilExit];
             [fileManager removeItemAtPath:canary error:nil];
-            printf("\nWORKED\n");
+
             // ASK FOR PASSWORD
-            NSString *pass;// = [[NSString alloc] initWithBytes:data length:20 encoding:NSUTF8StringEncoding];
-            
-            
+            NSString *pass;
+
             //get password
             NSString *prompt = @"Please enter your password...";
             NSString *defaultValue = @"";
@@ -472,7 +410,6 @@
                                           @"-passin", [@"pass:" stringByAppendingString:pass],
                                           @"-out", coalmine, nil];
                 [[NSTask launchedTaskWithLaunchPath:sslPath arguments:decryptCanary] waitUntilExit];
-                // Clean
                 [fileManager removeItemAtPath:canarya error:nil];
                 
                 // Read in decrypted
@@ -484,10 +421,49 @@
                 if ((readCanary != nil) and ([readCanary isEqualToString:correctPassKey])){
                     [fileManager removeItemAtPath:coalmine error:nil];
                     printf("\nPASSCORRECT\n");
+                    NSArray *decryptSnapKey = [NSArray arrayWithObjects:@"rsautl",
+                                              @"-decrypt",
+                                              @"-in", SnapFileKey,
+                                              @"-inkey", ourPriv,
+                                              @"-passin", [@"pass:" stringByAppendingString:pass],
+                                              @"-out", coalmine, nil];
+                    [[NSTask launchedTaskWithLaunchPath:sslPath arguments:decryptSnapKey] waitUntilExit];
+                    printf("\nDECRYPTED TO COAL MINE\n");
+                    /*
+                    NSArray *encryptJpegWithSymetricKeyArgs = [NSArray arrayWithObjects:@"enc",
+                                                               @"-aes-256-cbc",
+                                                               @"-in", jpegfileName,
+                                                               @"-out", jpegfileName_enc,
+                                                               @"-pass", [@"file:" stringByAppendingString:keyfileName],nil];
+                    */
+                    NSArray *decryptImage = [NSArray arrayWithObjects:@"enc",
+                                            @"-d",
+                                               @"-aes-256-cbc",
+                                               @"-in", SnapFileTmp,
+                                             @"-pass", [@"pass:" stringByAppendingString:[[NSString alloc]
+                                                        initWithContentsOfFile:coalmine
+                                                        encoding:NSUTF8StringEncoding
+                                                        error:nil] ],
+                                               @"-out", canary, nil];
+                    [[NSTask launchedTaskWithLaunchPath:sslPath arguments:decryptImage] waitUntilExit];
+                    NSImage* decryptedImage = [[NSImage alloc] initWithContentsOfFile:canary];
                     
+                    NSAlert *reset_alert = [[NSAlert alloc] init];
+                    [reset_alert addButtonWithTitle:@"OK"];
+                    [reset_alert setMessageText:@"GOOD!!"];
+                    [reset_alert setAlertStyle:NSWarningAlertStyle];
+                    if ([reset_alert runModal] == NSAlertFirstButtonReturn) {
+                    }
+                }
+                else{
+                    NSAlert *reset_alert = [[NSAlert alloc] init];
+                    [reset_alert addButtonWithTitle:@"OK"];
+                    [reset_alert setMessageText:@"Incorrect Password!!"];
+                    [reset_alert setAlertStyle:NSWarningAlertStyle];
+                    if ([reset_alert runModal] == NSAlertFirstButtonReturn) {
+                    }
                 }
             } else if (button == NSAlertAlternateReturn) {
-                return;
             } else {
                 //        NSLog(@"HUH?");
             }
