@@ -68,16 +68,14 @@ Various software applications currently available on the Mac platform provide th
 
 \chapter{Overall Description}
 \section{Operating Environment}
-The program is being developed on and for the Mac OS X operating system as a self-contained, stand-alone application.
+The program was developed on and for the Mac OS X operating system as a self-contained, stand-alone application.
 
 The choice of working on Mac OS X came primarily as a result of it's availability and ease of development. Most of the group already possessed an extensive prior working-knowledge of development on the OS, while the Unix-like environment provided a necessary level of accessibility to the rest of the group already familiar with such systems.
 
-Additionally, the system comes equipped with the development  tools and documentation necessary for properly implementing the system being designed. This lends not only to rapid development cycles but also simplifies the process for building and integrating necessary sub-systems.
+Additionally, the system came equipped with the development  tools and documentation necessary for properly implementing the system. This allowed not only to rapid development cycles but also simplified the implementation and integration of the necessary sub-systems.
 
 \section{Design and Implementation Constraints}
-The system is developed with and requires \emph{OpenCV Version 2.4.6} and \emph{OpenSSL-1.0.1e}. \emph{CMake} \cite{software:cmake} is required to install OpenCV into the project. The \emph{openssl-xcode} \cite{software:ssl-xcode} project is required in conjunction with OpenSSL to build the static libcrypto.a library for integration with the system. \emph{Xcode} is required to build the system.
-
-While the project itself is implemented in Objective-C, the project dependencies OpenCV and OpenSSL are implemented in C++ and C, respectively. Objective-C is primarily used for creating the necessary graphical user interface and protected windowing system for displaying images. C++ and C code may be integrated into and called from within Objective-C code files with no issue.
+The system was designed exclusively with the built in system libraries included in the Cocoa development environment. The decision to do this came due to the need for fast implementation and integration of the system as a whole and using these libraries allowed us to be sure that there would be little to no issue making the components work together. The system was written in Objective-C using the XCode development tools, this also aided in the ease of development as the user interface design was streamlined with the help of the UI builder tools within XCode.
 
 \section{System Outline}
 \subsection*{High Level Overview}
@@ -136,23 +134,19 @@ The system UI will consist of five distinct components, each within its own disp
 \begin{itemize*}
 	\item[] \textbf{Main capture window}
 		\begin{itemize*}
-			\item[]  Presented on starting the program. Provides the user with a viewing window from which to capture images.
-		\end{itemize*}
-	\item[] \textbf{Image approval}
-		\begin{itemize*}
-			\item[]  Displays the captured image. Prompts the user to \emph{accept} or \emph{reject} it.
+			\item[]  Presented on starting the program. Provides the user with a viewing window from which to capture images. This also displays the captured image. Prompts the user to \emph{accept} or \emph{reject} it.
 		\end{itemize*}
 	\item[] \textbf{Contact List / Recipient selection}
 		\begin{itemize*}
-			\item[]  Displays the available list of contacts with whom the image may be shared. Each contact listed corresponds to a public key stored in the application directory tree.
+			\item[]  Displays the available list of contacts with whom the image may be shared. Each contact listed corresponds to a public key stored in the application directory tree. This component is an Open Dialog, but it does satisfy the conceptual idea of a contact list by keeping the public keys stored in the directory tree.
 		\end{itemize*}
 	\item[] \textbf{Received images}
 		\begin{itemize*}
-			\item[]  Displays all encrypted images to be opened by the user. These images are also stored within the application directory tree.
+			\item[]  Displays all encrypted images to be opened by the user. These images are shown as an Open Dialog and allows users to explore their directories to find the encrypted image they wish to open.
 		\end{itemize*}
 	\item[] \textbf{Secure viewing}
 		\begin{itemize*}
-			\item[]  Presents the user with a decrypted image within a secure viewing window. This window prevents any external processes from reading its contents, effectively preventing any sort of screen capture.
+			\item[]  Presents the user with a decrypted image within a secure viewing window.
 		\end{itemize*}
 \end{itemize*}
 
@@ -162,14 +156,12 @@ The system UI will consist of five distinct components, each within its own disp
 \subsection*{The Programming Environment}
 One of the big decisions the group needed to make initially was what language and environment we wanted to build our project on. After doing some research on our options we settled on using Objective-C in the in MAC OSX Cocoa environment. We also decided that we would use Github in order keep a working repository for us to use throughout development.
 
-One of the large benefits to Objective-C is that, even though not everyone in our group has worked with it, we have all done a mixture of C programming and object oriented programming. Objective-C combines these worlds by extending the C programming language in such a way that makes it an object oriented language \cite{Hillegass}. This will help us in our project by allowing us to access lower level details that are offered in C, as well as have the elegance of creating classes and objects that suite our needs as we may do in Java.
-
-Developing on the Mac OS X using Cocoa will give us access to development tools such as XCode and Instruments, which come standard as part of the Mac OS X Developer Tools \cite{Hillegass}. These tools will offer us the resources we need in order to implement our project very efficiently by allowing us an IDE to work in, as well as debugging tools to fix any various errors. Cocoa also offers collections of classes and functionality in packages called frameworks \cite{Hillegass}. We hope to be able to use these Cocoa frameworks to implement various functionality that we wish to utilize rather than having to write those components by scratch.
+The use of Objective-C, while in theory being a very good decison, ended up being a much larger learning curve than originally anticipated. Going into the project, John was the only member who had a working knowledge of Objective-C. The other two groupmates had to work to bring themselves up to speed. Cameron was able to do this pretty quickly, but Mike struggled to gain a working knowledge with Objective-C which at times made development strained. The XCode environment did have a lot of tools, such as the Interface Builder, which helped with development. However, if we had to do the project again we may have to think more about which language to proceed with production.
 
 \subsection*{The User Interface}
-One of the large benefits of the Developer Tools is the Interface Builder that is in XCode. The Interface Builder allows us to create UI components using a tool rather than coding buttons and frames by hand \cite{Hillegass}. The UI components in MAC OS X are represented utilizing XIB. XIB is simply a representation of XML \cite{Hillegass}. When we create our user interface XCode handles all of the saving of the components in the XIB, allowing us to concentrate more on the design portion.
+One of the large benefits of the Developer Tools was the Interface Builder in XCode. The Interface Builder allowed us to create UI components using a tool rather than coding buttons and frames by hand \cite{Hillegass}.
 
-The important benefit of the Interface Builder is that we can also stitch our back end functionality to the UI components, which will also be saved to the XIB by XCode \cite{Hillegass}. This will be important because a user will need to perform actions in order to show a picture in our application by using button components. Interface Builder lets us do this easily which makes it possible to focus heavily on the back end rather than spending a lot of time designing a UI from scratch.
+The important benefit of the Interface Builder was the ability stitch our back end functionality to the UI components. This was important because a user needed to perform actions in order to show a picture in our application by using button components. Interface Builder let us do this easily which made it possible to focus heavily on the back end rather than spending a lot of time designing a UI from scratch.
 
 \section{Screenshots}
 %reflection on the purpose of the section
