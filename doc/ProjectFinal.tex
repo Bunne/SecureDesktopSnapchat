@@ -54,16 +54,16 @@
 
 \chapter{Introduction}
 \section{Purpose}
-This project aims to produce a secure Snapchat-like client for the Mac OS X operating system.
+This project aimed to produce a secure Snapchat-like client for the Mac OS X operating system.
 
-The project makes extensive use of available open source software \emph{OpenCV} \cite{software:opencv} and \emph{OpenSSL} \cite{software:openssl} for the handling and protection of image data, as well as system-level control attributes available within the OS development environment.
+The project made extensive use of available open source software \emph{OpenSSL} \cite{software:openssl} for the handling and protection of image data, as well as system-level control attributes available within the OS development environment. While the original intention of the project was to use \emph{OpenCV} \cite{software:opencv}, we settled on built-in system image-handling functions instead for ease of implementation.
 
 \section{Motivation}
 The mobile application ``Snapchat'' has recently found popularity for its ability to quickly and securely send image and video between users. The novelty of the system lies in the fact users cannot export images or video received and, once viewed, the data persists on the device for only a set length of time after which it is permanently deleted. However a critical flaw in this scheme is that screenshots of received messages may be taken by software imbedded within the mobile device itself, allowing users to easily bypass the security of the application.
 
 Due to restrictions in mobile software capabilities the Snapchat application is unable to intercept the hardware interrupts that that allow the taking of screenshots, limiting the application's ability to respond to merely notifying the sending-party of this action.
 
-Various software applications currently available on the Mac platform provide the user with a means by which to share media between individuals. However, once this media has been sent through a service the user has absolutely no expectation of control over it. No application presently available provides the functionality of a Snapchat-like application.
+Various software applications currently available on the Mac platform provide the user with a means by which to share media between individuals. However, once this media has been sent through a service the user has absolutely no expectation of control over it. No application that we could find provides the functionality of a Snapchat-like application.
 
 
 \chapter{Overall Description}
@@ -81,10 +81,10 @@ While the project itself is implemented in Objective-C, the project dependencies
 
 \section{System Outline}
 \subsection*{High Level Overview}
-From a high level standpoint, application will:
+From a high level standpoint, the application:
 \begin{itemize*}
-	\item {Present the user with a means of capturing or selecting an image for transfer.}
-	\item {Allow the user to select one or more recipients of this image from a list of additional users.}
+	\item {Present the user with a means of capturing an image for transfer.}
+	\item {Allow the user to select a recipient of this image from a list of additional users.}
 	\item {Encrypt this image for secure transfer using the RSA public key provided by each of those additional users.}
 	\item {Display the image to the recipient using a custom-built viewer so as to prevent the recipient from taking screenshots or otherwise saving this image to the disk.}
 	\item {Erase all image data once the allowed viewing time has elapsed.}
@@ -100,9 +100,9 @@ The normal use case for this program may be divided into two distinct operationa
 	\begin{itemize*}
 		\item[] If the image is \emph{accepted}:
 		\begin{itemize*}
-			\item Allow the user to select $n$ recipients from their contacts list.
-			\item Encrypt the image $n$ times, generating a separate encrypted image for each public key of each contact.
-			\item Ship the encrypted files to the recipients.
+			\item Allow the user to select a recipient from their contacts list.
+			\item Encrypt the image, generating a container for the public key of the recipient.
+                        \item Provide the user with a file to ship the recipient by the means of their choice.
 		\end{itemize*}
 		\item[] If the image is \emph{rejected}:
 		\begin{itemize*}
@@ -113,8 +113,9 @@ The normal use case for this program may be divided into two distinct operationa
 
 \subsubsection{Viewing File:}
 \begin{itemize*}
-	\item Present the user with a list of received, encrypted files to open.
+	\item When the user requests to open a chat:
 	\begin{itemize*}
+        	\item Provide user with a method to select from the file system an snap container.
 		\item[] On \emph{file selection}:
 		\begin{itemize*}
 			\item Decrypt the file to memory, without saving decrypted contents to the disk.
@@ -185,12 +186,13 @@ From a meta-policy standpoint, however, the ability to take a screenshot is a fa
 On desktop operating systems (and in our case, the Mac in particular), the operating system grants the application more latitude in how it is displayed. The display system is less tightly bound to the operating system, and the display system can be tweaked to suit the application's specific needs.
 
 In researching this project, we came across an interesting property of the Mac OS X built-in DVD player application. Taking a screenshot of the application does not work. Instead of the still-frame you would expect to be in the screenshot, a grey and white checkerboard %insert image here
-is used in place. The windowing system seems to be unable to expose the contents of the video to whatever part of the system handles screenshots.
+is used in place. 
 
-Further research into why the DVD player application does not expose screenshots revealed a property set by the interface that disallows the window system to allow access to the screen buffer of the player-window. %citation : https://developer.apple.com/library/mac/documentation/Cocoa/Reference/ApplicationKit/Classes/NSWindow_Class/Reference/Reference.html#//apple_ref/c/tdef/NSWindowSharingType
-By using this window property, we should be able to block access to the contents of our message from other processes, to include the process that takes a screen grab.
+Further research into why the DVD player application does not expose screenshots revealed a property set by the interface that seemed to disallow the window system to allow access to the screen buffer of the player-window. %citation : https://developer.apple.com/library/mac/documentation/Cocoa/Reference/ApplicationKit/Classes/NSWindow_Class/Reference/Reference.html#//apple_ref/c/tdef/NSWindowSharingType
 
-What needs to be done is test corner cases: in the event that a screenshot were taken as root, would the window property discussed above still protect the message, or have we found a hole in the window manager's window sharing policies? This is a subject that still needs testing. 
+We thought that the windowing system would be unable to expose the contents of the video to whatever part of the system handles screenshots. We were wrong. It turns out that the screenshot mechanism always has access to the contents of the windowing system in recent versions of OS X. DVD player renders video content in graphics memory and merges in the video to the placeholder in the windowing system on its way out to the display. We were unable to replicate this.
+
+Upon realizing that we did not have the resources (time, expertise) to reverse-engineer the DVD-Player method of preventing screenshots, we implemented a method for removing screenshots as they are taken. The program taps into the file-system monitoring capabilities of OS X, and looks for created or modified image files. Any files found are immediately deleted.
 
 \subsection*{Thoughts on Protecting Against Screenshots in Mobile} 
 %Dan asked for something on this... May as well start talking about it now...
@@ -206,7 +208,11 @@ There are a number of solutions that could be used to solve this. The first woul
 Alternately, a more active approach could be taken, where the app on a mobile device or an application on a proper computer could use cameras available to watch for cameras. This method would require computer vision techniques to create an ``imaging device identifier''. In theory, if the application were forced to run on screens with a camera attached (usually the main screen), then the application could watch for imaging devices pointed at the screen, and blank the screen if such an imaging device were suspected. 
 
 \section{Concluding Remarks}
-A large portion of work thus far has been in bringing ourselves up to speed. After reading Objective-C and MAC OS X documentation we feel confident that we will be able to become fluent in a short period of time. We hope that this choice will allow us to implement our project in an efficient manner, and hopefully leave time to play around with additional functionality.
+At the progress point, we wrote that:\\
+
+\noindent\emph{A large portion of work thus far has been in bringing ourselves up to speed. After reading Objective-C and MAC OS X documentation we feel confident that we will be able to become fluent in a short period of time. We hope that this choice will allow us to implement our project in an efficient manner, and hopefully leave time to play around with additional functionality.}\\
+
+While we were unable to provide all functionality as promised, we feel that our final product is an excellent proof of concept of secure picture messaging. While some functions are left up to the user, we believe that the core functionality that we aimed to provide was accomplished. Further effort could be applied to satisfy less-critical design specifications to make the user interface more usable, and to provide message transmission more reliable than ``via means provided by the user'' (eg. email, physical media-passing, etc). 
 
 \chapter{Final Deliverable}
 The final deliverable for this project will be an implemented, demonstrable Snapchat-like system with an accompanying evaluation of the security measures demonstrated and their impact.
