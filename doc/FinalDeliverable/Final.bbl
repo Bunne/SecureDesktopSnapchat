@@ -1,0 +1,145 @@
+% $ biblatex auxiliary file $
+% $ biblatex version 2.1 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated as
+% required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+\entry{nswindow}{manual}{}
+  \name{author}{1}{}{%
+    {{}%
+     {Apple}{A.}%
+     {}{}%
+     {}{}%
+     {}{}}%
+  }
+  \strng{namehash}{A1}
+  \strng{fullhash}{A1}
+  \field{sortinit}{A}
+  \field{title}{NSWindow Class Reference}
+  \field{year}{2013}
+  \warn{\item Invalid format of field 'month'}
+\endentry
+
+\entry{Hillegass}{book}{}
+  \name{author}{2}{}{%
+    {{}%
+     {Hillegass}{H.}%
+     {A.}{A.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Preble}{P.}%
+     {A.}{A.}%
+     {}{}%
+     {}{}}%
+  }
+  \list{publisher}{1}{%
+    {Pearson Education Inc}%
+  }
+  \strng{namehash}{HAPA1}
+  \strng{fullhash}{HAPA1}
+  \field{sortinit}{H}
+  \field{edition}{4th}
+  \field{title}{Cocoa Programming for Mac OS X}
+  \list{location}{1}{%
+    {Upper Saddle River, New Jersey}%
+  }
+  \field{year}{2011}
+\endentry
+
+\entry{software:opencv}{misc}{}
+  \name{author}{1}{}{%
+    {{}%
+     {Itseez}{I.}%
+     {}{}%
+     {}{}%
+     {}{}}%
+  }
+  \strng{namehash}{I1}
+  \strng{fullhash}{I1}
+  \field{sortinit}{I}
+  \field{howpublished}{Software}
+  \field{title}{OpenCV (Open Source Computer Vision)}
+  \verb{url}
+  \verb http://opencv.org/
+  \endverb
+  \field{year}{2013}
+  \warn{\item Invalid format of field 'month'}
+\endentry
+
+\entry{software:cmake}{misc}{}
+  \name{author}{1}{}{%
+    {{}%
+     {Kitware}{K.}%
+     {}{}%
+     {}{}%
+     {}{}}%
+  }
+  \strng{namehash}{K1}
+  \strng{fullhash}{K1}
+  \field{sortinit}{K}
+  \field{howpublished}{Software}
+  \field{title}{CMake}
+  \verb{url}
+  \verb http://www.cmake.org/
+  \endverb
+  \field{year}{2013}
+  \warn{\item Invalid format of field 'month'}
+\endentry
+
+\entry{software:ssl-xcode}{misc}{}
+  \name{author}{1}{}{%
+    {{}%
+     {Lombardo}{L.}%
+     {Stephen}{S.}%
+     {}{}%
+     {}{}}%
+  }
+  \strng{namehash}{LS1}
+  \strng{fullhash}{LS1}
+  \field{sortinit}{L}
+  \field{howpublished}{Software}
+  \field{title}{openssl-xcode}
+  \verb{url}
+  \verb https://github.com/sqlcipher/openssl-xcode/
+  \endverb
+  \field{year}{2013}
+  \warn{\item Invalid format of field 'month'}
+\endentry
+
+\entry{software:openssl}{misc}{}
+  \name{author}{1}{}{%
+    {{}%
+     {Project}{P.}%
+     {The~OpenSSL}{T.~O.}%
+     {}{}%
+     {}{}}%
+  }
+  \strng{namehash}{PTO1}
+  \strng{fullhash}{PTO1}
+  \field{sortinit}{P}
+  \field{howpublished}{Software}
+  \field{title}{OpenSSL}
+  \verb{url}
+  \verb http://www.openssl.org/
+  \endverb
+  \field{year}{2013}
+  \warn{\item Invalid format of field 'month'}
+\endentry
+
+\lossort
+\endlossort
+
+\endinput
