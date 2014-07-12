@@ -16,4 +16,5 @@
 *.out
 *.app
 
+# Other
 .DS_Store
