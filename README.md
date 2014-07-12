@@ -24,3 +24,6 @@ Implementation
 * Upon acceptance by the recipient, the file is decrypted and displayed for a pre-set length of time.
 * Any and all images generated on the system while the program is operating are destroyed for the sake of security.
 * When the length of the display time has elapsed, the image data is destroyed.
+
+### IMPORTANT
+Due to limitations in time and execution of the project, during the 10-second window during which the image is displayed any changes detected on the disk wherein an image file is concerned will be deleted. In this time frame, it is suggested that you do not save, move, or otherwise interact with images or directories that contain images.
